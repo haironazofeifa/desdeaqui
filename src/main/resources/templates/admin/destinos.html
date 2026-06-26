@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Destinos - Desde Aquí</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Georgia, serif;
+               background: #0b6f9c; color: #2b1a0c; }
+
+        .navbar {
+            height: 70px;
+            background: #3e2008;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+            border-bottom: 4px solid #2b1206;
+        }
+        .logo { color: #f7e2b5; font-size: 20px; font-weight: bold; }
+        .nav-link {
+            color: #f7e2b5; text-decoration: none;
+            padding: 8px 16px; border: 2px solid #8b5a2b;
+            font-size: 14px;
+        }
+        .nav-link:hover { background: #5a2d12; }
+        .nav-link.activo { background: #5a2d12; }
+        .logout { margin-left: auto; color: #f7e2b5;
+                  text-decoration: none; font-size: 14px; }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .cabecera h1 { margin: 0; color: #f7e2b5; font-size: 26px; }
+
+        .btn-nuevo {
+            background: #3e7f20;
+            color: white;
+            border: 3px solid #244b14;
+            padding: 12px 24px;
+            font-family: Georgia, serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-nuevo:hover { background: #2f6418; }
+
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f4dfb4;
+            border: 5px solid #5a2d12;
+        }
+        .tabla th {
+            background: #5a2d12;
+            color: #f7e2b5;
+            padding: 14px;
+            text-align: left;
+            font-size: 15px;
+        }
+        .tabla td {
+            padding: 12px 14px;
+            border-bottom: 2px solid #d4b483;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .tabla tr:hover td { background: #edd9a0; }
+
+        .descripcion-col {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .acciones { display: flex; gap: 8px; }
+
+        .btn-editar {
+            background: #3e7f20; color: white;
+            border: 2px solid #244b14;
+            padding: 7px 14px;
+            font-family: Georgia, serif;
+            cursor: pointer; font-size: 13px;
+            text-decoration: none;
+        }
+        .btn-eliminar {
+            background: #a32d2d; color: white;
+            border: 2px solid #7e1d1d;
+            padding: 7px 14px;
+            font-family: Georgia, serif;
+            cursor: pointer; font-size: 13px;
+        }
+        .btn-tips {
+            background: #1a6b8a; color: white;
+            border: 2px solid #0e4d66;
+            padding: 7px 14px;
+            font-family: Georgia, serif;
+            cursor: pointer; font-size: 13px;
+            text-decoration: none;
+        }
+
+        .exito {
+            background: #3e7f20; color: white;
+            padding: 12px; margin-bottom: 16px;
+            border: 2px solid #244b14; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Desde Aquí — Admin</div>
+    <a class="nav-link activo" href="/admin/destinos">Destinos</a>
+    <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+    <a class="logout" href="/logout">Salir</a>
+</div>
+
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h1>Destinos</h1>
+        <a class="btn-nuevo" href="/admin/destinos/nuevo">+ Nuevo destino</a>
+    </div>
+
+    <div class="exito" th:if="${param.exito}" th:text="${param.exito[0]}"></div>
+
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="destino : ${destinos}">
+                <td th:text="${destino.id}"></td>
+                <td th:text="${destino.nombre}"></td>
+                <td class="descripcion-col" th:text="${destino.descripcion}"></td>
+                <td th:text="${destino.imagen}"></td>
+                <td>
+                    <div class="acciones">
+                        <a class="btn-editar"
+                           th:href="@{/admin/destinos/editar/{id}(id=${destino.id})}">
+                            Editar
+                        </a>
+                        <a class="btn-tips"
+                           th:href="@{/admin/destinos/{id}/tips(id=${destino.id})}">
+                            Tips
+                        </a>
+                        <form method="post"
+                              th:action="@{/admin/destinos/eliminar/{id}(id=${destino.id})}"
+                              onsubmit="return confirm('¿Eliminar este destino?')">
+                            <button class="btn-eliminar" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

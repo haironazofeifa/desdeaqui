@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Explorar - Desde Aquí</title>
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+  <style>
+
+    .contenedor {
+      display: grid;
+      grid-template-columns: 280px 1fr 430px;
+      gap: 18px;
+      padding: 20px;
+      height: calc(100vh - 80px);
+      background-image: url("/img/fondoMar.png");
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    .filtros {
+      width: 280px;
+      background: #f4dfb4;
+      border: 5px solid #5a2d12;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 0 0 4px #2b1206;
+    }
+
+    .filtros h2 {
+      background: #3e7f20;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      border: 3px solid #244b14;
+      margin: 0 0 20px;
+      font-size: 18px;
+    }
+
+    .grupo {
+      margin-bottom: 18px;
+    }
+
+    .grupo h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .opciones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .opcion {
+      background: #f6d99b;
+      border: 3px solid #9b6729;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      color: #2b1a0c;
+    }
+
+    .opcion:hover {
+      background: #9ccc65;
+      border-color: #2f7a1f;
+    }
+
+    .opcion.activa {
+      background: #9ccc65;
+      border-color: #2f7a1f;
+    }
+
+    .btn-limpiar {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      color: #5a2d12;
+      border: 3px solid #5a2d12;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    .btn-limpiar:hover {
+      background: #e8cfa0;
+    }
+
+    .resultados {
+      flex: 1;
+      background: #f4dfb4;
+      border: 5px solid #5a2d12;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 0 0 4px #2b1206;
+    }
+
+    .cabecera-resultados {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .filtros-activos {
+      font-size: 13px;
+      color: #5a2d12;
+      margin-bottom: 15px;
+    }
+
+    .grid-destinos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .tarjeta {
+      background: #f8e3b3;
+      border: 4px solid #5a2d12;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #2b1a0c;
+      display: block;
+      transition: transform 0.15s ease;
+    }
+
+    .tarjeta:hover {
+      transform: scale(1.02);
+    }
+
+    .tarjeta h2 {
+      margin: 0;
+      background: #3e7f20;
+      color: white;
+      padding: 8px;
+      font-size: 17px;
+    }
+
+    .tarjeta-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tarjeta-img-placeholder {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(#50b9e8, #2d9b64);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+    }
+
+    .tarjeta-meta {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px;
+      font-size: 12px;
+      background: #edd9a0;
+      border-top: 2px solid #c4923e;
+    }
+
+    .tag {
+      background: #1a6b8a;
+      color: white;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    .descripcion-card {
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .sin-resultados {
+      text-align: center;
+      padding: 50px;
+      color: #8b5a2b;
+      font-size: 16px;
+    }
+
+    .panel-tips {
+      margin-top: 12px;
+      background: #f8e3b3;
+      border: 3px solid #8b5a2b;
+      padding: 10px;
+      max-height: 135px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .panel-tips.visible {
+      display: block;
+    }
+
+    .panel-tips h3 {
+      margin: 0 0 8px;
+      color: #3e7f20;
+      font-size: 16px;
+    }
+
+    .panel-tips p {
+      margin: 7px 0;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .modal-tips {
+      position: fixed;
+      top: 145px;
+      right: 390px;
+      width: 430px;
+      max-height: 620px;
+      overflow-y: auto;
+      background: #f8e3b3;
+      border: 5px solid #8b5a2b;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      padding: 18px;
+      z-index: 999;
+      display: none;
+    }
+
+    .modal-tips.visible {
+      display: block;
+    }
+
+    .cerrar-modal {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: #5a2d12;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding-right: 30px;
+    }
+
+    .modal-icono {
+      font-size: 28px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: #2b1a0c;
+      font-size: 20px;
+    }
+
+    .modal-header p {
+      margin: 3px 0 0;
+      color: #7a4a24;
+      font-size: 13px;
+    }
+
+    .lista-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tip-card {
+      background: #fff4d2;
+      border: 3px solid #c4923e;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .tip-card strong {
+      color: #3e7f20;
+    }
+
+    .tip-vacio {
+      background: #fff4d2;
+      border: 3px solid #c4923e;
+      padding: 14px;
+      text-align: center;
+      color: #7a4a24;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="logo">Desde<br>Aquí</div>
+
+    <button class="map-btn" onclick="window.location.href='/'">Mapa</button>
+    <button class="explo-btn" onclick="window.location.href='/explorar'">Explorar</button>
+    <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
+    <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
+
+    <div class="usuario-navbar">
+      <span th:text="${usuario.nombre}">Usuario</span>
+      <a class="btn-logout" href="/logout">Salir</a>
+    </div>
+  </div>
+
+  <div class="contenedor">
+
+    <aside class="filtros">
+      <h2>Filtrar destinos</h2>
+
+      <div class="grupo">
+        <h3>Zona</h3>
+        <div class="opciones">
+          <button type="button" class="opcion" data-clave="zona" data-valor="pacifico"
+            th:classappend="${zonaActiva == 'pacifico'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Pacífico
+          </button>
+
+          <button type="button" class="opcion" data-clave="zona" data-valor="caribe"
+            th:classappend="${zonaActiva == 'caribe'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Caribe
+          </button>
+
+          <button type="button" class="opcion" data-clave="zona" data-valor="norte"
+            th:classappend="${zonaActiva == 'norte'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Norte
+          </button>
+
+          <button type="button" class="opcion" data-clave="zona" data-valor="sur"
+            th:classappend="${zonaActiva == 'sur'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Sur
+          </button>
+
+          <button type="button" class="opcion" data-clave="zona" data-valor="valle"
+            th:classappend="${zonaActiva == 'valle'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Valle
+          </button>
+        </div>
+      </div>
+
+      <div class="grupo">
+        <h3>Interés</h3>
+        <div class="opciones">
+          <button type="button" class="opcion" data-clave="interes" data-valor="playa"
+            th:classappend="${interesActivo == 'playa'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Playa
+          </button>
+
+          <button type="button" class="opcion" data-clave="interes" data-valor="aventura"
+            th:classappend="${interesActivo == 'aventura'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Aventura
+          </button>
+
+          <button type="button" class="opcion" data-clave="interes" data-valor="naturaleza"
+            th:classappend="${interesActivo == 'naturaleza'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Naturaleza
+          </button>
+
+          <button type="button" class="opcion" data-clave="interes" data-valor="cultura"
+            th:classappend="${interesActivo == 'cultura'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            Cultura
+          </button>
+        </div>
+      </div>
+
+      <div class="grupo">
+        <h3>Presupuesto</h3>
+        <div class="opciones">
+          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$"
+            th:classappend="${presupuestoActivo == '$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            $
+          </button>
+
+          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$$"
+            th:classappend="${presupuestoActivo == '$$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            $$
+          </button>
+
+          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$$$"
+            th:classappend="${presupuestoActivo == '$$$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
+            $$$
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-limpiar" type="button" onclick="window.location.href='/explorar'">
+        ↩ Limpiar filtros
+      </button>
+    </aside>
+
+    <main class="resultados">
+
+      <div class="cabecera-resultados">
+        <span th:text="'🧭 ' + ${#lists.size(destinos)} + ' destinos encontrados'">
+          🧭 Destinos encontrados
+        </span>
+      </div>
+
+      <div class="filtros-activos">
+        <span th:if="${zonaActiva != ''}" th:text="'Zona: ' + ${zonaActiva}"></span>
+        <span th:if="${interesActivo != ''}" th:text="' | Interés: ' + ${interesActivo}"></span>
+        <span th:if="${presupuestoActivo != ''}" th:text="' | Presupuesto: ' + ${presupuestoActivo}"></span>
+      </div>
+
+      <div th:if="${#lists.isEmpty(destinos)}" class="sin-resultados">
+        No hay destinos con esos filtros. Probá otra combinación.
+      </div>
+
+      <div class="grid-destinos" th:if="${!#lists.isEmpty(destinos)}">
+
+        <div th:each="destino : ${destinos}" class="tarjeta" th:data-id="${destino.id}"
+          th:data-nombre="${destino.nombre}" th:data-imagen="${destino.imagen}"
+          th:data-descripcion="${destino.descripcion}" onclick="seleccionarDestinoDesdeTarjeta(this)">
+
+          <h2 th:text="${destino.nombre}">Destino</h2>
+
+          <img th:if="${destino.imagen != null and !destino.imagen.isEmpty()}" class="tarjeta-img"
+            th:src="@{/img/{imagen}(imagen=${destino.imagen})}" th:alt="${destino.nombre}">
+
+          <div th:unless="${destino.imagen != null and !destino.imagen.isEmpty()}" class="tarjeta-img-placeholder">
+            🗺️
+          </div>
+
+          <div class="tarjeta-meta">
+            <span class="tag" th:text="${destino.zona}">zona</span>
+            <span th:text="${destino.presupuesto}">$</span>
+          </div>
+
+          <div class="descripcion-card" th:text="${destino.descripcion}">
+            Descripción del destino
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+    <aside class="panel-derecho">
+
+      <div class="panel-destino">
+
+        <div class="titulo-destino" id="tituloDestino">
+          Seleccioná un destino
+        </div>
+
+        <div class="foto-destino" id="fotoDestino">
+          🗺️
+        </div>
+
+        <div class="descripcion-destino" id="descripcionDestino">
+          Hacé clic en un destino para ver sus detalles.
+        </div>
+
+        <button class="boton-tip tip-transporte" type="button" onclick="verTips('transporte')">
+          Tips de transporte
+        </button>
+
+        <button class="boton-tip tip-comida" type="button" onclick="verTips('comida')">
+          Tips de comida local
+        </button>
+
+        <button class="boton-tip tip-hospedaje" type="button" onclick="verTips('hospedaje')">
+          Tips de hospedaje
+        </button>
+
+        <button class="boton-tip tip-lugares" type="button" onclick="verTips('lugares')">
+          Lugares que tienes que conocer
+        </button>
+
+        <form id="formGuardar" method="post" action="/guardados/agregar" onsubmit="return validarGuardarDestino()">
+          <input type="hidden" id="inputDestinoId" name="destinoId" value="">
+          <button class="guardar" type="submit">Guardar destino</button>
+        </form>
+
+      </div>
+
+    </aside>
+
+    <div id="modalTips" class="modal-tips">
+      <button class="cerrar-modal" type="button" onclick="cerrarTips()">×</button>
+      <div class="modal-header">
+        <div class="modal-icono" id="iconoTips">🚌</div>
+        <div>
+          <h3 id="tituloTips">Tips locales</h3>
+          <p id="subtituloTips">Consejos de viajeros locales</p>
+        </div>
+      </div>
+      <div id="listaTips" class="lista-tips"></div>
+    </div>
+
+  </div>
+
+  <script>
+    let destinoActivoNombre = "";
+    let destinoActivoId = null;
+
+    function aplicarFiltroDesdeBoton(boton) {
+      const clave = boton.dataset.clave;
+      const valor = boton.dataset.valor;
+
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.get(clave) === valor) {
+        params.delete(clave);
+      } else {
+        params.set(clave, valor);
+      }
+
+      const query = params.toString();
+
+      if (query === "") {
+        window.location.href = "/explorar";
+      } else {
+        window.location.href = "/explorar?" + query;
+      }
+    }
+
+    function seleccionarDestinoDesdeTarjeta(tarjeta) {
+      seleccionarDestino(
+        tarjeta.dataset.id,
+        tarjeta.dataset.nombre,
+        tarjeta.dataset.imagen,
+        tarjeta.dataset.descripcion
+      );
+    }
+
+    function seleccionarDestino(id, nombre, imagen, descripcion) {
+      destinoActivoId = id;
+      destinoActivoNombre = nombre;
+
+      document.getElementById("tituloDestino").innerText = nombre;
+      document.getElementById("descripcionDestino").innerText = descripcion;
+      document.getElementById("inputDestinoId").value = id;
+
+      const foto = document.getElementById("fotoDestino");
+
+      if (imagen && imagen.trim() !== "") {
+        foto.innerHTML = '<img src="/img/' + imagen + '" alt="' + nombre + '">';
+      } else {
+        foto.innerHTML = "🗺️";
+      }
+
+      cerrarTips();
+    }
+
+    function validarGuardarDestino() {
+      if (!destinoActivoId) {
+        alert("Primero seleccioná un destino.");
+        return false;
+      }
+
+      return true;
+    }
+
+    function cerrarTips() {
+      document.getElementById("modalTips").classList.remove("visible");
+    }
+
+    function verTips(categoria) {
+      if (!destinoActivoId) {
+        alert("Primero seleccioná un destino.");
+        return;
+      }
+
+      const iconos = {
+        transporte: "🚌",
+        comida: "🍽️",
+        hospedaje: "🏠",
+        lugares: "📍"
+      };
+
+      fetch("/api/tips?destinoId=" + destinoActivoId + "&categoria=" + encodeURIComponent(categoria))
+        .then(response => response.json())
+        .then(tips => {
+          const modal = document.getElementById("modalTips");
+          const titulo = document.getElementById("tituloTips");
+          const subtitulo = document.getElementById("subtituloTips");
+          const lista = document.getElementById("listaTips");
+          const icono = document.getElementById("iconoTips");
+
+          icono.innerText = iconos[categoria] || "💡";
+          titulo.innerText = "Tips de " + categoria + " - " + destinoActivoNombre;
+          subtitulo.innerText = "Consejos locales para este destino";
+          lista.innerHTML = "";
+
+          if (tips.length === 0) {
+            lista.innerHTML = `
+              <div class="tip-vacio">
+                No hay tips para esta categoría.
+              </div>
+            `;
+          } else {
+            tips.forEach(tip => {
+              lista.innerHTML += `
+                <div class="tip-card">
+                  <strong>Consejo local</strong>
+                  <p>${tip.contenido}</p>
+                </div>
+              `;
+            });
+          }
+
+          modal.classList.add("visible");
+        })
+        .catch(error => {
+          console.log(error);
+          alert("No se pudieron cargar los tips.");
+        });
+    }
+
+    // Botón activo según ruta
+    const rutaActual = window.location.pathname;
+    if (rutaActual === "/") {
+      document.querySelector(".map-btn")?.classList.add("activo");
+    }
+    if (rutaActual.startsWith("/explorar")) {
+      document.querySelector(".explo-btn")?.classList.add("activo");
+    }
+    if (rutaActual.startsWith("/guardados")) {
+      document.querySelector(".guar-btn")?.classList.add("activo");
+    }
+    if (rutaActual.startsWith("/perfil")) {
+      document.querySelector(".perfil-btn")?.classList.add("activo");
+    }
+  </script>
+
+</body>
+
+</html>

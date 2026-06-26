@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Guardados - Desde Aquí</title>
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+
+  <style>
+    
+    .contenedor {
+      height: calc(100vh - 80px);
+      background-image: url("/img/fondoMar.png");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .panel-guardados {
+      width: 1000px;
+      height: 650px;
+      background: #f4dfb4;
+      border: 6px solid #5a2d12;
+      padding: 30px;
+      box-shadow: 0 0 0 4px #2b1206;
+      overflow: auto;
+    }
+
+    .titulo {
+      text-align: center;
+      font-size: 32px;
+      color: white;
+      background: #3e7f20;
+      padding: 15px;
+      border: 4px solid #244b14;
+      margin-bottom: 25px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .destino {
+      background: #f8e3b3;
+      border: 4px solid #5a2d12;
+      margin-bottom: 18px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .icono {
+      font-size: 52px;
+      width: 80px;
+      text-align: center;
+    }
+
+    .info {
+      flex: 1;
+      margin-left: 20px;
+    }
+
+    .info h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .info p {
+      margin: 5px 0 0;
+      font-size: 16px;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 10px;
+    }
+
+    .ver,
+    .eliminar {
+      padding: 12px 18px;
+      border: 3px solid #5a2d12;
+      font-family: Georgia, serif;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ver {
+      background: #3e7f20;
+      color: white;
+    }
+
+    .eliminar {
+      background: #a32d2d;
+      color: white;
+    }
+
+    .ver:hover {
+      background: #2f6418;
+    }
+
+    .eliminar:hover {
+      background: #7e1d1d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="logo">Desde<br>Aquí</div>
+
+    <button class="map-btn" onclick="window.location.href='/'">Mapa</button>
+    <button class="explo-btn" onclick="window.location.href='/explorar'">Explorar</button>
+    <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
+    <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
+
+    <!-- Nombre del usuario y logout -->
+    <span th:text="${usuario.nombre}" style="color:#f7e2b5; margin-left:auto;"></span>
+    <a href="/logout" style="color:#f7e2b5; margin-left:16px; text-decoration:none;">Salir</a>
+  </div>
+
+  <div class="contenedor">
+
+    <div class="panel-guardados">
+
+      <div class="titulo">⭐ Mis destinos guardados</div>
+
+      <div class="subtitulo">
+        Aquí puedes ver los lugares que marcaste para visitar después.
+      </div>
+
+      <div th:if="${#lists.isEmpty(guardados)}" class="subtitulo">
+        Aún no tienes destinos guardados.
+      </div>
+      <div th:each="g : ${guardados}" class="destino">
+        <div class="icono">🗺️</div>
+
+        <div class="info">
+          <h2 th:text="${g.destino.nombre}">Destino</h2>
+          <p th:text="${g.destino.descripcion}">Descripción</p>
+        </div>
+
+        <div class="acciones">
+          <button class="ver" onclick="window.location.href='/'">Ver en mapa</button>
+          <form method="post" th:action="@{/guardados/eliminar/{id}(id=${g.id})}">
+            <button class="eliminar" type="submit">Eliminar</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const rutaActual = window.location.pathname;
+
+      if (rutaActual === "/") {
+        document.querySelector(".map-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/explorar")) {
+        document.querySelector(".explo-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/guardados")) {
+        document.querySelector(".guar-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/perfil")) {
+        document.querySelector(".perfil-btn")?.classList.add("activo");
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Desde Aquí</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+  
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="logo">Desde<br>Aquí</div>
+    <button class="map-btn">Mapa</button>
+    <button class="explo-btn" onclick="window.location.href='/explorar'">Explorar</button>
+    <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
+    <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
+
+    <div class="usuario-navbar">
+      <span th:text="${usuario.nombre}"></span>
+      <a class="btn-logout" href="/logout">Salir</a>
+    </div>
+  </div>
+
+  <div class="contenedor">
+
+    <div class="mapa">
+
+      <div class="mapa-wrapper">
+        <img src="/img/MapaCostaRica.png" class="imagen-mapa" alt="Mapa de Costa Rica">
+        <button th:each="destino, i : ${destinos}" th:class="'pin p' + (${i.index} + 1)" th:data-id="${destino.id}"
+          th:data-nombre="${destino.nombre}" th:data-imagen="${destino.imagen}"
+          th:data-descripcion="${destino.descripcion}" onclick="seleccionarDestinoDesdeBoton(this)">
+        </button>
+      </div>
+
+      <!-- Destinos guardados del usuario -->
+      <div class="guardados">
+        <h3>⭐ Mis destinos guardados</h3>
+        <div class="cards">
+
+          <div th:if="${#lists.isEmpty(guardados)}" style="font-size:13px; color:#f8e2b6; opacity:0.8;">
+            Aún no guardaste destinos.
+          </div>
+
+          <div th:each="g : ${guardados}"      class="card"      th:data-id="${g.destino.id}"      th:data-nombre="${g.destino.nombre}"     th:data-imagen="${g.destino.imagen}"      th:data-descripcion="${g.destino.descripcion}"     onclick="seleccionarDestinoDesdeBoton(this)">  <img th:if="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"       th:src="@{/img/{imagen}(imagen=${g.destino.imagen})}"       th:alt="${g.destino.nombre}">  <div th:unless="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"       class="card-placeholder">    🗺️  </div>  <div class="card-nombre" th:text="${g.destino.nombre}"></div></div>
+
+        </div>
+      </div>
+
+      <!-- Tip destacado: muestra el primero disponible -->
+      <div class="consejo" th:if="${tipDestacado != null}">
+        <h3>Tip destacado</h3>
+        <p th:text="${tipDestacado.contenido}"></p>
+      </div>
+
+    </div>
+
+    <!-- Panel lateral del destino seleccionado -->
+    <div class="zona-panel">
+      <div class="panel">
+
+        <div class="titulo" id="tituloDestino">Seleccioná un destino</div>
+
+        <div class="foto" id="fotoDestino">🗺️</div>
+
+        <div class="descripcion" id="descripcionDestino">
+          Hacé clic en un pin del mapa o en un destino guardado para ver sus detalles.
+        </div>
+
+        <button class="boton-libro transporte"></button>
+        <button class="boton-libro comida"></button>
+        <button class="boton-libro hospedaje"></button>
+        <button class="boton-libro lugares"></button>
+
+        <form id="formGuardar" method="post" action="/guardados/agregar" onsubmit="return validarGuardarDestino()">
+          <input type="hidden" id="inputDestinoId" name="destinoId" value="">
+          <button class="guardar" type="submit"></button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal de tips -->
+  <div class="panel-tips" id="panelTips">
+    <div class="tips-contenido">
+      <div class="tips-titulo" id="tituloTips">Tips</div>
+      <div id="listaTips"></div>
+      <button class="btn-cerrar-tips" onclick="cerrarTips()">Cerrar</button>
+    </div>
+  </div>
+
+  <script>
+    let destinoActivoId = null;
+
+    function validarGuardarDestino() {
+      if (!destinoActivoId || document.getElementById('inputDestinoId').value === '') {
+        alert('Primero seleccioná un destino del mapa.');
+        return false;
+      }
+      return true;
+    }
+
+    function seleccionarDestinoDesdeBoton(elemento) {
+      seleccionarDestino(
+        elemento.dataset.id,
+        elemento.dataset.nombre,
+        elemento.dataset.imagen,
+        elemento.dataset.descripcion
+      );
+    }
+
+    function seleccionarDestino(id, nombre, imagen, descripcion) {
+      destinoActivoId = id;
+
+      document.getElementById('tituloDestino').innerText = nombre;
+      document.getElementById('descripcionDestino').innerText = descripcion;
+      document.getElementById('inputDestinoId').value = id;
+
+      const foto = document.getElementById('fotoDestino');
+      if (imagen) {
+        foto.innerHTML = '<img src="/img/' + imagen + '" alt="' + nombre + '">';
+      } else {
+        foto.innerHTML = '🗺️';
+      }
+    }
+
+    function verTips(categoria) {
+      if (!destinoActivoId) {
+        alert('Primero seleccioná un destino del mapa.');
+        return;
+      }
+
+      const nombres = {
+        transporte: '🚍 Tips de transporte',
+        comida: '🍽️ Tips de comida',
+        hospedaje: '🏠 Tips de hospedaje',
+        lugares: '📍 Lugares recomendados'
+      };
+
+      document.getElementById('tituloTips').innerText = nombres[categoria];
+      document.getElementById('listaTips').innerHTML = 'Cargando...';
+      document.getElementById('panelTips').classList.add('visible');
+
+      // Llamada al endpoint que devuelve los tips como JSON
+      fetch('/api/tips?destinoId=' + destinoActivoId + '&categoria=' + categoria)
+        .then(r => r.json())
+        .then(tips => {
+          const lista = document.getElementById('listaTips');
+          if (tips.length === 0) {
+            lista.innerHTML = '<p style="text-align:center;color:#8b5a2b">No hay tips en esta categoría.</p>';
+            return;
+          }
+          lista.innerHTML = tips.map(t =>
+            '<div class="tip-item">' + t.contenido + '</div>'
+          ).join('');
+        });
+    }
+
+    function cerrarTips() {
+      document.getElementById('panelTips').classList.remove('visible');
+    }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const rutaActual = window.location.pathname;
+
+      if (rutaActual === "/") {
+        document.querySelector(".map-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/explorar")) {
+        document.querySelector(".explo-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/guardados")) {
+        document.querySelector(".guar-btn")?.classList.add("activo");
+      }
+
+      if (rutaActual.startsWith("/perfil")) {
+        document.querySelector(".perfil-btn")?.classList.add("activo");
+      }
+    });
+  </script>
+</body>
+
+</html>

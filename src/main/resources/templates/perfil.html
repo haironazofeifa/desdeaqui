@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil - Desde Aquí</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+
+    <style>
+        .contenedor {
+            height: calc(100vh - 80px);
+            background-image: url("/img/fondoMar.png");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .perfil {
+            width: 950px;
+            height: 650px;
+            background: #f4dfb4;
+            border: 6px solid #5a2d12;
+            box-shadow: 0 0 0 4px #2b1206;
+            padding: 30px;
+        }
+
+        .titulo {
+            background: #3e7f20;
+            color: white;
+            text-align: center;
+            font-size: 32px;
+            padding: 12px;
+            border: 4px solid #244b14;
+            margin-bottom: 25px;
+        }
+
+        .contenido {
+            display: flex;
+            gap: 25px;
+        }
+
+        .izquierda {
+            width: 280px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 220px;
+            height: 220px;
+            margin: auto;
+            background: #d6c08c;
+            border: 5px solid #5a2d12;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 110px;
+        }
+
+        .nombre {
+            font-size: 28px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .nivel {
+            color: #3e7f20;
+            font-size: 22px;
+            margin-top: 10px;
+        }
+
+        .derecha {
+            flex: 1;
+        }
+
+        .seccion {
+            background: #f8e3b3;
+            border: 4px solid #5a2d12;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .seccion h2 {
+            margin-top: 0;
+            color: #3e7f20;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .numero {
+            font-size: 34px;
+            font-weight: bold;
+            color: #3e7f20;
+        }
+
+        .insignias {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .insignia {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            padding: 12px;
+            width: 140px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">Desde<br>Aquí</div>
+
+        <button class="map-btn" onclick="window.location.href='/'">
+        </button>
+
+        <button class="explo-btn" onclick="window.location.href='/explorar'">
+        </button>
+
+        <button class="guar-btn" onclick="window.location.href='/guardados'">
+        </button>
+
+        <button class="perfil-btn" onclick="window.location.href='/perfil'">
+        </button>
+
+        <!-- Nombre del usuario y logout -->
+        <span th:text="${usuario.nombre}" style="color:#f7e2b5; margin-left:auto;"></span>
+        <a href="/logout" style="color:#f7e2b5; margin-left:16px; text-decoration:none;">Salir</a>
+    </div>
+
+    <div class="contenedor">
+
+        <div class="perfil">
+
+            <div class="titulo">
+                👤 Perfil de Viajero
+            </div>
+
+            <div class="contenido">
+
+                <div class="izquierda">
+
+                    <div class="avatar">
+                        🧭
+                    </div>
+
+                    <div class="nombre" th:text="${usuario != null ? usuario.nombre : 'Invitado'}">Hairon</div>
+
+                    <div class="nivel" th:text="${usuario != null ? usuario.rol.nombre : 'Sin rol'}">VIAJERO</div>
+
+                </div>
+
+                <div class="derecha">
+
+                    <div class="seccion">
+
+                        <h2>📊 Estadísticas</h2>
+
+                        <div class="estadisticas">
+
+                            <div class="stat">
+                                <div class="numero">12</div>
+                                Destinos vistos
+                            </div>
+
+                            <div class="stat">
+                                <div class="numero">4</div>
+                                Guardados
+                            </div>
+
+                            <div class="stat">
+                                <div class="numero">3</div>
+                                Playas exploradas
+                            </div>
+
+                            <div class="stat">
+                                <div class="numero">2</div>
+                                Volcanes vistos
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="seccion">
+
+                        <h2>🏆 Insignias</h2>
+
+                        <div class="insignias">
+
+                            <div class="insignia">
+                                🐢<br>
+                                Explorador del Caribe
+                            </div>
+
+                            <div class="insignia">
+                                🌋<br>
+                                Cazador de Volcanes
+                            </div>
+
+                            <div class="insignia">
+                                🏖️<br>
+                                Amante de Playas
+                            </div>
+
+                            <div class="insignia">
+                                🌲<br>
+                                Aventurero
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="seccion">
+
+                        <h2>⭐ Destino Favorito</h2>
+
+                        <p>
+                            <strong>Uvita 🐋</strong>
+                        </p>
+
+                        <p>
+                            Naturaleza, playas tranquilas y observación de ballenas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Botón activo según ruta
+        const rutaActual = window.location.pathname;
+        if (rutaActual === "/") {
+            document.querySelector(".map-btn")?.classList.add("activo");
+        }
+        if (rutaActual.startsWith("/explorar")) {
+            document.querySelector(".explo-btn")?.classList.add("activo");
+        }
+        if (rutaActual.startsWith("/guardados")) {
+            document.querySelector(".guar-btn")?.classList.add("activo");
+        }
+        if (rutaActual.startsWith("/perfil")) {
+            document.querySelector(".perfil-btn")?.classList.add("activo");
+        }
+    </script>
+</body>
+
+</html>

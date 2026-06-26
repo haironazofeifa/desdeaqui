@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Destino - Desde Aquí</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Georgia, serif;
+               background: #0b6f9c; color: #2b1a0c; }
+
+        .navbar {
+            height: 70px; background: #3e2008;
+            display: flex; align-items: center;
+            padding: 0 24px; gap: 16px;
+            border-bottom: 4px solid #2b1206;
+        }
+        .logo { color: #f7e2b5; font-size: 20px; font-weight: bold; }
+        .nav-link {
+            color: #f7e2b5; text-decoration: none;
+            padding: 8px 16px; border: 2px solid #8b5a2b; font-size: 14px;
+        }
+        .logout { margin-left: auto; color: #f7e2b5;
+                  text-decoration: none; font-size: 14px; }
+
+        .contenedor {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: #f4dfb4;
+            border: 6px solid #5a2d12;
+            padding: 36px;
+            box-shadow: 0 0 0 4px #2b1206;
+        }
+
+        .titulo {
+            background: #3e7f20; color: white;
+            text-align: center; font-size: 22px;
+            padding: 10px; border: 4px solid #244b14;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block; font-weight: bold;
+            margin-bottom: 6px; font-size: 15px;
+        }
+
+        input, textarea {
+            width: 100%; padding: 10px;
+            border: 3px solid #8b5a2b;
+            background: #fff9ee;
+            font-family: Georgia, serif;
+            font-size: 15px; margin-bottom: 20px;
+        }
+
+        textarea { height: 100px; resize: vertical; }
+
+        .botones { display: flex; gap: 12px; }
+
+        .btn-guardar {
+            flex: 1; padding: 14px;
+            background: #3e7f20; color: white;
+            border: 3px solid #244b14;
+            font-family: Georgia, serif;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+        .btn-guardar:hover { background: #2f6418; }
+
+        .btn-cancelar {
+            flex: 1; padding: 14px;
+            background: transparent; color: #5a2d12;
+            border: 3px solid #5a2d12;
+            font-family: Georgia, serif;
+            font-size: 16px; cursor: pointer;
+            text-decoration: none; text-align: center;
+        }
+        .btn-cancelar:hover { background: #e8cfa0; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Desde Aquí — Admin</div>
+    <a class="nav-link" href="/admin/destinos">Destinos</a>
+    <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+    <a class="logout" href="/logout">Salir</a>
+</div>
+
+<div class="contenedor">
+    <div class="panel">
+
+        <!-- El título cambia según si es nuevo o edición -->
+        <div class="titulo"
+             th:text="${destino.id == null} ? 'Nuevo destino' : 'Editar destino'">
+        </div>
+
+        <form th:if="${destino.id == null}" method="post" action="/admin/destinos/guardar">
+
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" th:value="${destino.nombre}" required>
+
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" th:text="${destino.descripcion}"></textarea>
+
+            <label for="imagen">Nombre del archivo de imagen</label>
+            <input type="text" id="imagen" name="imagen" th:value="${destino.imagen}" placeholder="ej: tamarindo.png">
+
+            <div class="botones">
+                <button class="btn-guardar" type="submit">Guardar</button>
+                <a class="btn-cancelar" href="/admin/destinos">Cancelar</a>
+            </div>
+
+        </form>
+
+        <form th:if="${destino.id != null}" method="post"
+              th:action="@{/admin/destinos/actualizar/{id}(id=${destino.id})}">
+
+            <label for="nombre2">Nombre</label>
+            <input type="text" id="nombre2" name="nombre" th:value="${destino.nombre}" required>
+
+            <label for="descripcion2">Descripción</label>
+            <textarea id="descripcion2" name="descripcion" th:text="${destino.descripcion}"></textarea>
+
+            <label for="imagen2">Nombre del archivo de imagen</label>
+            <input type="text" id="imagen2" name="imagen" th:value="${destino.imagen}" placeholder="ej: tamarindo.png">
+
+            <div class="botones">
+                <button class="btn-guardar" type="submit">Guardar</button>
+                <a class="btn-cancelar" href="/admin/destinos">Cancelar</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

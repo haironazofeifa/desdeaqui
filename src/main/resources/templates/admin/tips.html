@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tips - Desde Aquí</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Georgia, serif;
+               background: #0b6f9c; color: #2b1a0c; }
+
+        .navbar {
+            height: 70px; background: #3e2008;
+            display: flex; align-items: center;
+            padding: 0 24px; gap: 16px;
+            border-bottom: 4px solid #2b1206;
+        }
+        .logo { color: #f7e2b5; font-size: 20px; font-weight: bold; }
+        .nav-link {
+            color: #f7e2b5; text-decoration: none;
+            padding: 8px 16px; border: 2px solid #8b5a2b; font-size: 14px;
+        }
+        .logout { margin-left: auto; color: #f7e2b5;
+                  text-decoration: none; font-size: 14px; }
+
+        .contenedor { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        .cabecera {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px;
+        }
+        .cabecera h1 { margin: 0; color: #f7e2b5; font-size: 24px; }
+
+        .panel {
+            background: #f4dfb4;
+            border: 5px solid #5a2d12;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .panel h2 {
+            margin: 0 0 20px;
+            font-size: 18px;
+            color: #3e7f20;
+        }
+
+        label {
+            display: block; font-weight: bold;
+            margin-bottom: 6px; font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%; padding: 9px;
+            border: 3px solid #8b5a2b;
+            background: #fff9ee;
+            font-family: Georgia, serif;
+            font-size: 14px; margin-bottom: 16px;
+        }
+
+        textarea { height: 80px; resize: vertical; }
+
+        .btn-agregar {
+            background: #3e7f20; color: white;
+            border: 3px solid #244b14;
+            padding: 11px 22px;
+            font-family: Georgia, serif;
+            font-size: 15px; font-weight: bold; cursor: pointer;
+        }
+
+        .tip-item {
+            background: #f8e3b3;
+            border: 3px solid #c4923e;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .tip-info { flex: 1; }
+
+        .tip-categoria {
+            display: inline-block;
+            background: #1a6b8a; color: white;
+            padding: 3px 10px; font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .tip-contenido { font-size: 14px; line-height: 1.4; }
+
+        .btn-eliminar-tip {
+            background: #a32d2d; color: white;
+            border: 2px solid #7e1d1d;
+            padding: 7px 12px;
+            font-family: Georgia, serif;
+            font-size: 13px; cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .volver {
+            color: #f7e2b5; text-decoration: none; font-size: 14px;
+        }
+        .volver:hover { text-decoration: underline; }
+
+        .sin-tips {
+            text-align: center; color: #8b5a2b;
+            font-size: 15px; padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Desde Aquí — Admin</div>
+    <a class="nav-link" href="/admin/destinos">Destinos</a>
+    <a class="logout" href="/logout">Salir</a>
+</div>
+
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h1>Tips — <span th:text="${destino.nombre}"></span></h1>
+        <a class="volver" href="/admin/destinos">← Volver a destinos</a>
+    </div>
+
+    <!-- Formulario para agregar nuevo tip -->
+    <div class="panel">
+        <h2>Agregar tip</h2>
+
+        <form method="post"
+              th:action="@{/admin/destinos/{id}/tips/guardar(id=${destino.id})}">
+
+            <label for="categoria">Categoría</label>
+            <select id="categoria" name="categoria" required>
+                <option value="">-- Seleccioná --</option>
+                <option value="transporte">🚍 Transporte</option>
+                <option value="comida">🍽️ Comida</option>
+                <option value="hospedaje">🏠 Hospedaje</option>
+                <option value="lugares">📍 Lugares</option>
+            </select>
+
+            <label for="contenido">Contenido del tip</label>
+            <textarea id="contenido" name="contenido"
+                      placeholder="Escribí el consejo..." required></textarea>
+
+            <button class="btn-agregar" type="submit">Agregar tip</button>
+
+        </form>
+    </div>
+
+    <!-- Lista de tips existentes -->
+    <div class="panel">
+        <h2>Tips actuales</h2>
+
+        <div th:if="${#lists.isEmpty(tips)}" class="sin-tips">
+            Este destino no tiene tips todavía.
+        </div>
+
+        <div th:each="tip : ${tips}" class="tip-item">
+            <div class="tip-info">
+                <span class="tip-categoria" th:text="${tip.categoria}"></span>
+                <div class="tip-contenido" th:text="${tip.contenido}"></div>
+            </div>
+            <form method="post"
+                  th:action="@{/admin/destinos/{did}/tips/eliminar/{tid}(did=${destino.id},tid=${tip.id})}"
+                  onsubmit="return confirm('¿Eliminar este tip?')">
+                <button class="btn-eliminar-tip" type="submit">Eliminar</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

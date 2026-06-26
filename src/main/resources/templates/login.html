@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Desde Aquí</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <style>
+        
+
+        .panel {
+            background: #f4dfb4;
+            border: 6px solid #5a2d12;
+            padding: 40px;
+            width: 420px;
+            box-shadow: 0 0 0 4px #2b1206;
+        }
+
+        .titulo {
+            background: #3e7f20;
+            color: white;
+            text-align: center;
+            font-size: 26px;
+            padding: 10px;
+            border: 4px solid #244b14;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid #8b5a2b;
+            background: #fff9ee;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #3e7f20;
+            color: white;
+            border: 3px solid #244b14;
+            font-family: Georgia, serif;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover { background: #2f6418; }
+
+        .error {
+            background: #a32d2d;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 18px;
+            border: 2px solid #7e1d1d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="panel">
+
+        <div class="titulo">🗺️ Desde Aquí</div>
+
+        <!-- Mensaje de error si las credenciales son incorrectas -->
+        <div class="error" th:if="${error}" th:text="${error}"></div>
+
+        <form method="post" action="/login">
+
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" name="correo"
+                   placeholder="tu@correo.com" required>
+
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena"
+                   placeholder="••••••••" required>
+
+            <button class="btn" type="submit">Entrar</button>
+
+        </form>
+
+        <!-- Agregar esto después del form -->
+        <button class="btn-login" 
+                onclick="window.location.href='/registro'"
+                style="width:100%; padding:12px; background:transparent;
+                       color:#5a2d12; border:3px solid #5a2d12;
+                       font-family:Georgia,serif; font-size:15px;
+                       cursor:pointer; margin-top:12px;">
+            ¿No tenés cuenta? Registrate
+        </button>
+
+    </div>
+
+</body>
+</html>
