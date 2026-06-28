@@ -18,7 +18,7 @@ public class TipService {
     }
 
     public List<Tip> listarPorDestinoYCategoria(Integer destinoId, String categoria) {
-        return tipRepository.findByDestinoIdAndCategoria(destinoId, categoria);
+        return tipRepository.findByDestinoIdAndCategoriaOrderByPromedio(destinoId, categoria);
     }
 
     public Optional<Tip> buscarPorId(Integer id) {

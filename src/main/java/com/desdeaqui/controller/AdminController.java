@@ -2,6 +2,7 @@ package com.desdeaqui.controller;
 
 import com.desdeaqui.model.Destino;
 import com.desdeaqui.model.Tip;
+import com.desdeaqui.model.Usuario;
 import com.desdeaqui.service.DestinoService;
 import com.desdeaqui.service.TipService;
 import jakarta.servlet.http.HttpSession;
@@ -143,8 +144,10 @@ public class AdminController {
         if (!esAdmin(session))
             return "redirect:/";
 
+        Usuario autor = (Usuario) session.getAttribute("usuarioActivo");
+
         destinoService.buscarPorId(id).ifPresent(d -> {
-            tipService.guardar(new Tip(contenido, categoria, d));
+            tipService.guardar(new Tip(contenido, categoria, d, autor));
         });
         return "redirect:/admin/destinos/" + id + "/tips";
     }

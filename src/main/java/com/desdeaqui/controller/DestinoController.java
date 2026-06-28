@@ -4,6 +4,10 @@ import com.desdeaqui.model.Destino;
 import com.desdeaqui.model.Guardado;
 import com.desdeaqui.model.Tip;
 import com.desdeaqui.model.Usuario;
+import com.desdeaqui.repository.GuardadoRepository;
+import com.desdeaqui.repository.TipRepository;
+import com.desdeaqui.repository.ComentarioRepository;
+import com.desdeaqui.repository.PuntuacionTipRepository;
 import com.desdeaqui.service.DestinoService;
 import com.desdeaqui.service.GuardadoService;
 import com.desdeaqui.service.TipService;
@@ -29,6 +33,18 @@ public class DestinoController {
 
     @Autowired
     private TipService tipService;
+
+    @Autowired
+private GuardadoRepository guardadoRepository;
+
+@Autowired
+private TipRepository tipRepository;
+
+@Autowired
+private ComentarioRepository comentarioRepository;
+
+@Autowired
+private PuntuacionTipRepository puntuacionTipRepository;
 
     @GetMapping("/")
     public String inicio(HttpSession session, Model model) {
@@ -85,9 +101,22 @@ public class DestinoController {
 
     @GetMapping("/perfil")
     public String perfil(HttpSession session, Model model) {
+
         Usuario usuario = (Usuario) session.getAttribute("usuarioActivo");
 
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        List<Guardado> guardados = guardadoRepository.findByUsuarioId(usuario.getId());
+
         model.addAttribute("usuario", usuario);
+        model.addAttribute("guardados", guardados);
+
+        model.addAttribute("totalGuardados", guardados.size());
+        model.addAttribute("totalTips", tipRepository.contarPorAutor(usuario.getId()));
+        model.addAttribute("totalComentarios", comentarioRepository.contarPorUsuario(usuario.getId()));
+        model.addAttribute("totalPuntuaciones", puntuacionTipRepository.countByUsuarioId(usuario.getId()));
 
         return "perfil";
     }

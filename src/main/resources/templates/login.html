@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Login - Desde Aquí</title>
-    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+
     <style>
-        
-
-        .panel {
-            background: #f4dfb4;
-            border: 6px solid #5a2d12;
-            padding: 40px;
-            width: 420px;
-            box-shadow: 0 0 0 4px #2b1206;
+        * {
+            box-sizing: border-box;
         }
 
-        .titulo {
-            background: #3e7f20;
-            color: white;
-            text-align: center;
-            font-size: 26px;
-            padding: 10px;
-            border: 4px solid #244b14;
-            margin-bottom: 28px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 6px;
-            font-size: 15px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 3px solid #8b5a2b;
-            background: #fff9ee;
+        body {
+            margin: 0;
+            min-height: 100vh;
             font-family: Georgia, serif;
-            font-size: 15px;
-            margin-bottom: 20px;
+            color: #2b1a0c;
+
+            background-image: url("/img/fondologin.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .btn {
+        .login-panel {
+            width: 430px;
+            height: 600px;
+
+            background-image: url("/img/login.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            padding: 60px 55px 60px 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .login-titulo {
             width: 100%;
-            padding: 14px;
-            background: #3e7f20;
-            color: white;
-            border: 3px solid #244b14;
-            font-family: Georgia, serif;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+            height: 95px;
 
-        .btn:hover { background: #2f6418; }
+            background-image: url("/img/DesdeAqui.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            margin-bottom: 30px;
+
+            color: transparent;
+            font-size: 0;
+        }
 
         .error {
             background: #a32d2d;
@@ -64,43 +65,105 @@
             margin-bottom: 18px;
             border: 2px solid #7e1d1d;
             font-size: 14px;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            height: 48px;
+            padding: 10px 12px;
+            border: 3px solid #8b5a2b;
+            background: #fff9ee;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3e7f20;
+            box-shadow: 0 0 0 2px rgba(62, 127, 32, 0.25);
+        }
+
+        .btn-img {
+            width: 100%;
+            border: none;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            cursor: pointer;
+            display: block;
+        }
+
+        .btn-entrar {
+            height: 69px;
+            background-image: url("/img/entrar.png");
+            margin-top: 30px;
+
+            color: transparent;
+            font-size: 0;
+        }
+
+        .btn-registro {
+            width: 90%;
+            height: 60px;
+
+            background-image: url("/img/notienescuenta.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            margin-top: 30px;
+            margin-left: 4.5%;
+
+            color: transparent;
+            font-size: 0;
+
+            flex-shrink: 0;
+        }
+
+        .btn-entrar:hover,
+        .btn-registro:hover {
+            transform: scale(1.01);
         }
     </style>
 </head>
+
 <body>
 
-    <div class="panel">
+    <div class="login-panel">
 
-        <div class="titulo">🗺️ Desde Aquí</div>
+        <div class="login-titulo"></div>
 
-        <!-- Mensaje de error si las credenciales son incorrectas -->
         <div class="error" th:if="${error}" th:text="${error}"></div>
 
         <form method="post" action="/login">
 
-            <label for="correo">Correo</label>
-            <input type="email" id="correo" name="correo"
-                   placeholder="tu@correo.com" required>
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" placeholder="tu@correo.com" required>
 
-            <label for="contrasena">Contraseña</label>
-            <input type="password" id="contrasena" name="contrasena"
-                   placeholder="••••••••" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" placeholder="••••••••" required>
 
-            <button class="btn" type="submit">Entrar</button>
-
+            <button class="btn-img btn-entrar" type="submit">
+                Entrar
+            </button>
         </form>
 
-        <!-- Agregar esto después del form -->
-        <button class="btn-login" 
-                onclick="window.location.href='/registro'"
-                style="width:100%; padding:12px; background:transparent;
-                       color:#5a2d12; border:3px solid #5a2d12;
-                       font-family:Georgia,serif; font-size:15px;
-                       cursor:pointer; margin-top:12px;">
+        <button class="btn-img btn-registro" type="button" onclick="window.location.href='/registro'">
             ¿No tenés cuenta? Registrate
         </button>
 
     </div>
 
 </body>
+
 </html>

@@ -12,111 +12,195 @@
             background-image: url("/img/fondoMar.png");
             background-size: cover;
             background-position: center;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
+            padding: 20px;
+            overflow: hidden;
         }
 
         .perfil {
-            width: 950px;
-            height: 650px;
-            background: #f4dfb4;
-            border: 6px solid #5a2d12;
-            box-shadow: 0 0 0 4px #2b1206;
-            padding: 30px;
+            width: 1100px;
+            height: 690px;
+
+            background-image: url("/img/login.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            padding: 55px 90px 60px 90px;
+            overflow: hidden;
         }
 
-        .titulo {
-            background: #3e7f20;
-            color: white;
-            text-align: center;
-            font-size: 32px;
-            padding: 12px;
-            border: 4px solid #244b14;
-            margin-bottom: 25px;
+        .titulo-perfil {
+            width: 480px;
+            height: 75px;
+
+            margin: 0 auto 18px auto;
+
+            background-image: url("/img/titulo.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #f7f0d8;
+            font-size: 30px;
+            font-weight: bold;
+
+            text-shadow:
+                2px 2px 0 #1c3d12,
+                3px 3px 0 rgba(0, 0, 0, 0.45);
         }
 
         .contenido {
-            display: flex;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 26px;
+            height: 540px;
         }
 
-        .izquierda {
-            width: 280px;
+        .tarjeta-usuario {
+            background: rgba(248, 227, 179, 0.88);
+            border: 4px solid #5a2d12;
+            box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+
+            padding: 20px;
             text-align: center;
         }
 
         .avatar {
-            width: 220px;
-            height: 220px;
-            margin: auto;
-            background: #d6c08c;
-            border: 5px solid #5a2d12;
+            width: 160px;
+            height: 160px;
+
+            margin: 0 auto 16px auto;
+
+            background: #fff3d5;
+            border: 5px solid #8b5a2b;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 110px;
+
+            font-size: 80px;
         }
 
         .nombre {
             font-size: 28px;
-            margin-top: 15px;
             font-weight: bold;
+            color: #3b210f;
+            margin-bottom: 8px;
         }
 
-        .nivel {
-            color: #3e7f20;
-            font-size: 22px;
-            margin-top: 10px;
+        .correo {
+            font-size: 14px;
+            color: #5a2d12;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .rol {
+            display: inline-block;
+
+            background: #3e7f20;
+            color: #fff7d8;
+
+            border: 3px solid #244b14;
+
+            padding: 8px 16px;
+            font-weight: bold;
+            font-size: 15px;
         }
 
         .derecha {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
         }
 
         .seccion {
-            background: #f8e3b3;
+            background: rgba(248, 227, 179, 0.88);
             border: 4px solid #5a2d12;
-            padding: 18px;
-            margin-bottom: 18px;
+            box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+
+            padding: 16px;
         }
 
         .seccion h2 {
-            margin-top: 0;
-            color: #3e7f20;
+            margin: 0 0 14px 0;
+            color: #3b210f;
+            font-size: 24px;
         }
 
         .estadisticas {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
         }
 
         .stat {
             background: #fff3d5;
             border: 3px solid #8b5a2b;
             text-align: center;
-            padding: 15px;
+            padding: 12px 8px;
         }
 
         .numero {
-            font-size: 34px;
+            font-size: 32px;
             font-weight: bold;
             color: #3e7f20;
         }
 
-        .insignias {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        .texto-stat {
+            font-size: 13px;
+            color: #4b250f;
+            font-weight: bold;
         }
 
-        .insignia {
+        .lista-destinos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .destino-card {
             background: #fff3d5;
             border: 3px solid #8b5a2b;
-            padding: 12px;
-            width: 140px;
+            overflow: hidden;
+        }
+
+        .destino-card img {
+            width: 100%;
+            height: 95px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .destino-nombre {
+            padding: 8px;
             text-align: center;
+            font-weight: bold;
+            color: #3b210f;
+            font-size: 15px;
+        }
+
+        .vacio {
+            background: #fff3d5;
+            border: 3px dashed #8b5a2b;
+            padding: 20px;
+            text-align: center;
+            color: #5a2d12;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -126,42 +210,44 @@
     <div class="navbar">
         <div class="logo">Desde<br>Aquí</div>
 
-        <button class="map-btn" onclick="window.location.href='/'">
-        </button>
+        <button class="map-btn" onclick="window.location.href='/'"></button>
+        <button class="explo-btn" onclick="window.location.href='/explorar'"></button>
+        <button class="guar-btn" onclick="window.location.href='/guardados'"></button>
+        <button class="perfil-btn" onclick="window.location.href='/perfil'"></button>
 
-        <button class="explo-btn" onclick="window.location.href='/explorar'">
-        </button>
-
-        <button class="guar-btn" onclick="window.location.href='/guardados'">
-        </button>
-
-        <button class="perfil-btn" onclick="window.location.href='/perfil'">
-        </button>
-
-        <!-- Nombre del usuario y logout -->
-        <span th:text="${usuario.nombre}" style="color:#f7e2b5; margin-left:auto;"></span>
-        <a href="/logout" style="color:#f7e2b5; margin-left:16px; text-decoration:none;">Salir</a>
+        <div class="usuario-navbar">
+            <span th:text="${usuario.nombre}"></span>
+            <a class="btn-logout" href="/logout">Salir</a>
+        </div>
     </div>
 
     <div class="contenedor">
 
         <div class="perfil">
 
-            <div class="titulo">
-                👤 Perfil de Viajero
+            <div class="titulo-perfil">
+                Perfil
             </div>
 
             <div class="contenido">
 
-                <div class="izquierda">
+                <div class="tarjeta-usuario">
 
                     <div class="avatar">
-                        🧭
+                        👤
                     </div>
 
-                    <div class="nombre" th:text="${usuario != null ? usuario.nombre : 'Invitado'}">Hairon</div>
+                    <div class="nombre" th:text="${usuario.nombre}">
+                        Nombre
+                    </div>
 
-                    <div class="nivel" th:text="${usuario != null ? usuario.rol.nombre : 'Sin rol'}">VIAJERO</div>
+                    <div class="correo" th:text="${usuario.correo}">
+                        correo@correo.com
+                    </div>
+
+                    <div class="rol" th:text="${usuario.rol.nombre}">
+                        VIAJERO
+                    </div>
 
                 </div>
 
@@ -169,28 +255,28 @@
 
                     <div class="seccion">
 
-                        <h2>📊 Estadísticas</h2>
+                        <h2>Actividad real</h2>
 
                         <div class="estadisticas">
 
                             <div class="stat">
-                                <div class="numero">12</div>
-                                Destinos vistos
+                                <div class="numero" th:text="${totalGuardados}">0</div>
+                                <div class="texto-stat">Destinos guardados</div>
                             </div>
 
                             <div class="stat">
-                                <div class="numero">4</div>
-                                Guardados
+                                <div class="numero" th:text="${totalTips}">0</div>
+                                <div class="texto-stat">Tips publicados</div>
                             </div>
 
                             <div class="stat">
-                                <div class="numero">3</div>
-                                Playas exploradas
+                                <div class="numero" th:text="${totalComentarios}">0</div>
+                                <div class="texto-stat">Comentarios</div>
                             </div>
 
                             <div class="stat">
-                                <div class="numero">2</div>
-                                Volcanes vistos
+                                <div class="numero" th:text="${totalPuntuaciones}">0</div>
+                                <div class="texto-stat">Puntuaciones</div>
                             </div>
 
                         </div>
@@ -199,45 +285,31 @@
 
                     <div class="seccion">
 
-                        <h2>🏆 Insignias</h2>
+                        <h2>Destinos guardados</h2>
 
-                        <div class="insignias">
+                        <div th:if="${#lists.isEmpty(guardados)}" class="vacio">
+                            Todavía no tienes destinos guardados.
+                        </div>
 
-                            <div class="insignia">
-                                🐢<br>
-                                Explorador del Caribe
-                            </div>
+                        <div class="lista-destinos" th:if="${!#lists.isEmpty(guardados)}">
 
-                            <div class="insignia">
-                                🌋<br>
-                                Cazador de Volcanes
-                            </div>
+                            <div class="destino-card" th:each="g : ${guardados}">
 
-                            <div class="insignia">
-                                🏖️<br>
-                                Amante de Playas
-                            </div>
+                                <img th:if="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"
+                                     th:src="@{/img/{imagen}(imagen=${g.destino.imagen})}"
+                                     th:alt="${g.destino.nombre}">
 
-                            <div class="insignia">
-                                🌲<br>
-                                Aventurero
+                                <img th:unless="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"
+                                     src="/img/fondo5.jpeg"
+                                     alt="Imagen predeterminada">
+
+                                <div class="destino-nombre" th:text="${g.destino.nombre}">
+                                    Destino
+                                </div>
+
                             </div>
 
                         </div>
-
-                    </div>
-
-                    <div class="seccion">
-
-                        <h2>⭐ Destino Favorito</h2>
-
-                        <p>
-                            <strong>Uvita 🐋</strong>
-                        </p>
-
-                        <p>
-                            Naturaleza, playas tranquilas y observación de ballenas.
-                        </p>
 
                     </div>
 
@@ -250,21 +322,25 @@
     </div>
 
     <script>
-        // Botón activo según ruta
         const rutaActual = window.location.pathname;
+
         if (rutaActual === "/") {
             document.querySelector(".map-btn")?.classList.add("activo");
         }
+
         if (rutaActual.startsWith("/explorar")) {
             document.querySelector(".explo-btn")?.classList.add("activo");
         }
+
         if (rutaActual.startsWith("/guardados")) {
             document.querySelector(".guar-btn")?.classList.add("activo");
         }
+
         if (rutaActual.startsWith("/perfil")) {
             document.querySelector(".perfil-btn")?.classList.add("activo");
         }
     </script>
+
 </body>
 
 </html>
