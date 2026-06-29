@@ -19,12 +19,16 @@ public class Usuario {
     @Column(nullable = false, length = 255)
     private String contrasena;
 
-    @ManyToOne                          // muchos usuarios pueden tener el mismo rol
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
+
+    @ManyToOne // muchos usuarios pueden tener el mismo rol
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
     // ── Constructores ──────────────────────────────
-    public Usuario() {}
+    public Usuario() {
+    }
 
     public Usuario(String nombre, String correo, String contrasena, Rol rol) {
         this.nombre = nombre;
@@ -34,18 +38,52 @@ public class Usuario {
     }
 
     // ── Getters y Setters ──────────────────────────
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getContrasena() { return contrasena; }
-    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public Rol getRol() { return rol; }
-    public void setRol(Rol rol) { this.rol = rol; }
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
+
 }

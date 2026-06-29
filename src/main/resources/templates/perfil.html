@@ -25,12 +25,12 @@
             width: 1100px;
             height: 690px;
 
-            background-image: url("/img/login.png");
+            background-image: url("/img/perfilfondo.png");
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
 
-            padding: 55px 90px 60px 90px;
+            padding: 0px 90px 60px 90px;
             overflow: hidden;
         }
 
@@ -38,9 +38,8 @@
             width: 480px;
             height: 75px;
 
-            margin: 0 auto 18px auto;
+            margin: 5px auto 20px auto;
 
-            background-image: url("/img/titulo.png");
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -60,9 +59,12 @@
 
         .contenido {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 250px 1fr;
             gap: 26px;
-            height: 540px;
+            height: 500px;
+
+            position: relative;
+            left: 65px;
         }
 
         .tarjeta-usuario {
@@ -105,16 +107,36 @@
         }
 
         .rol {
-            display: inline-block;
+            width: 230px;
+            height: 80px;
 
-            background: #3e7f20;
-            color: #fff7d8;
+            margin: 10px auto 0 auto;
 
-            border: 3px solid #244b14;
+            background-image: url("/img/tipoViajero.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
 
-            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding-left: 55px;
+
+            color: #f7f0d8;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 15px;
+            text-transform: capitalize;
+
+            text-shadow:
+                2px 2px 0 #1c3d12,
+                3px 3px 0 rgba(0, 0, 0, 0.45);
+
+            position: relative;
+            left: -15px;
         }
 
         .derecha {
@@ -128,6 +150,7 @@
             background: rgba(248, 227, 179, 0.88);
             border: 4px solid #5a2d12;
             box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+            width: 525px;
 
             padding: 16px;
         }
@@ -202,6 +225,107 @@
             color: #5a2d12;
             font-weight: bold;
         }
+
+        .botones-perfil {
+            margin-top: 18px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-perfil-img {
+            width: 220px;
+            height: 45px;
+
+            border: none;
+            background-color: transparent;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            color: transparent;
+            font-size: 0;
+
+            cursor: pointer;
+            display: block;
+        }
+
+        .btn-editar-foto {
+            background-image: url("/img/editarfoto.png");
+        }
+
+        .btn-cerrar-sesion {
+            background-image: url("/img/cerrarsesion.png");
+        }
+
+        .btn-perfil-img:hover {
+            transform: scale(1.03);
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+
+            margin: 0 auto 16px auto;
+
+            background: #fff3d5;
+            border: 5px solid #8b5a2b;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 80px;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            text-align: center;
+            padding: 12px 8px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .icono-stat {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .numero {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3e7f20;
+            line-height: 1;
+        }
+
+        .texto-stat {
+            font-size: 13px;
+            color: #4b250f;
+            font-weight: bold;
+            line-height: 1.1;
+        }
     </style>
 </head>
 
@@ -215,10 +339,27 @@
         <button class="guar-btn" onclick="window.location.href='/guardados'"></button>
         <button class="perfil-btn" onclick="window.location.href='/perfil'"></button>
 
-        <div class="usuario-navbar">
-            <span th:text="${usuario.nombre}"></span>
-            <a class="btn-logout" href="/logout">Salir</a>
+        <div class="usuario-navbar" th:if="${usuario != null}">
+
+            <div class="usuario-info">
+
+                <div class="foto-navbar">
+                    <img th:if="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}"
+                        th:src="@{${usuario.fotoPerfil}}" alt="Foto de perfil">
+
+                    <span th:unless="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}">👤</span>
+                </div>
+
+                <span class="usuario-nombre" th:text="${usuario.nombre}">Usuario</span>
+
+            </div>
+
+            <a class="btn-salir" href="/logout">
+                Salir
+            </a>
+
         </div>
+
     </div>
 
     <div class="contenedor">
@@ -226,7 +367,6 @@
         <div class="perfil">
 
             <div class="titulo-perfil">
-                Perfil
             </div>
 
             <div class="contenido">
@@ -234,7 +374,14 @@
                 <div class="tarjeta-usuario">
 
                     <div class="avatar">
-                        👤
+
+                        <img th:if="${usuario.fotoPerfil != null}" th:src="@{${usuario.fotoPerfil}}"
+                            alt="Foto de perfil">
+
+                        <span th:unless="${usuario.fotoPerfil != null}">
+                            👤
+                        </span>
+
                     </div>
 
                     <div class="nombre" th:text="${usuario.nombre}">
@@ -248,6 +395,23 @@
                     <div class="rol" th:text="${usuario.rol.nombre}">
                         VIAJERO
                     </div>
+                    <div class="botones-perfil">
+
+                        <form method="post" action="/perfil/foto" enctype="multipart/form-data">
+                            <label class="btn-perfil-img btn-editar-foto" for="fotoUsuario">
+                                Editar foto
+                            </label>
+
+                            <input type="file" id="fotoUsuario" name="foto" accept="image/*"
+                                onchange="this.form.submit()" style="display: none;">
+                        </form>
+
+                        <button class="btn-perfil-img btn-cerrar-sesion" type="button"
+                            onclick="window.location.href='/logout'">
+                            Cerrar sesión
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -260,21 +424,25 @@
                         <div class="estadisticas">
 
                             <div class="stat">
+                                <img src="/img/destinos.png" alt="Destinos" class="icono-stat">
                                 <div class="numero" th:text="${totalGuardados}">0</div>
                                 <div class="texto-stat">Destinos guardados</div>
                             </div>
 
                             <div class="stat">
+                                <img src="/img/tips.png" alt="Tips" class="icono-stat">
                                 <div class="numero" th:text="${totalTips}">0</div>
                                 <div class="texto-stat">Tips publicados</div>
                             </div>
 
                             <div class="stat">
+                                <img src="/img/comentarios.png" alt="Comentarios" class="icono-stat">
                                 <div class="numero" th:text="${totalComentarios}">0</div>
                                 <div class="texto-stat">Comentarios</div>
                             </div>
 
                             <div class="stat">
+                                <img src="/img/puntuaciones.png" alt="Puntuaciones" class="icono-stat">
                                 <div class="numero" th:text="${totalPuntuaciones}">0</div>
                                 <div class="texto-stat">Puntuaciones</div>
                             </div>
@@ -296,12 +464,10 @@
                             <div class="destino-card" th:each="g : ${guardados}">
 
                                 <img th:if="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"
-                                     th:src="@{/img/{imagen}(imagen=${g.destino.imagen})}"
-                                     th:alt="${g.destino.nombre}">
+                                    th:src="@{/img/{imagen}(imagen=${g.destino.imagen})}" th:alt="${g.destino.nombre}">
 
                                 <img th:unless="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"
-                                     src="/img/fondo5.jpeg"
-                                     alt="Imagen predeterminada">
+                                    src="/img/fondo5.jpeg" alt="Imagen predeterminada">
 
                                 <div class="destino-nombre" th:text="${g.destino.nombre}">
                                     Destino
@@ -339,6 +505,27 @@
         if (rutaActual.startsWith("/perfil")) {
             document.querySelector(".perfil-btn")?.classList.add("activo");
         }
+    </script>
+    <script>
+        const inputFoto = document.getElementById("fotoUsuario");
+        const previewFoto = document.getElementById("previewFoto");
+        const avatarIcono = document.getElementById("avatarIcono");
+
+        inputFoto.addEventListener("change", function () {
+            const archivo = this.files[0];
+
+            if (archivo) {
+                const lector = new FileReader();
+
+                lector.onload = function (e) {
+                    previewFoto.src = e.target.result;
+                    previewFoto.style.display = "block";
+                    avatarIcono.style.display = "none";
+                };
+
+                lector.readAsDataURL(archivo);
+            }
+        });
     </script>
 
 </body>

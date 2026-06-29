@@ -185,10 +185,27 @@
     <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
     <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
 
-    <div class="usuario-navbar">
-      <span th:text="${usuario.nombre}"></span>
-      <a class="btn-logout" href="/logout">Salir</a>
+    <div class="usuario-navbar" th:if="${usuario != null}">
+
+  <div class="usuario-info">
+
+    <div class="foto-navbar">
+      <img th:if="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}"
+           th:src="@{${usuario.fotoPerfil}}"
+           alt="Foto de perfil">
+
+      <span th:unless="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}">👤</span>
     </div>
+
+    <span class="usuario-nombre" th:text="${usuario.nombre}">Usuario</span>
+
+  </div>
+
+  <a class="btn-salir" href="/logout">
+    Salir
+  </a>
+
+</div>
   </div>
 
   <div class="contenedor">

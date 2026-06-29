@@ -3,6 +3,7 @@ package com.desdeaqui.controller;
 import com.desdeaqui.model.Destino;
 import com.desdeaqui.model.Tip;
 import com.desdeaqui.model.Usuario;
+import com.desdeaqui.service.UsuarioService;
 import com.desdeaqui.service.DestinoService;
 import com.desdeaqui.service.TipService;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +21,9 @@ public class AdminController {
 
     @Autowired
     private TipService tipService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     // ── Verificar rol ──────────────────────────────
     private boolean esAdmin(HttpSession session) {
@@ -93,7 +97,10 @@ public class AdminController {
             @PathVariable Integer id,
             @RequestParam String nombre,
             @RequestParam String descripcion,
-            @RequestParam String imagen) {
+            @RequestParam String imagen,
+            @RequestParam(required = false) String zona,
+            @RequestParam(required = false) String interes,
+            @RequestParam(required = false) String presupuesto) {
         if (!esAdmin(session))
             return "redirect:/";
 
@@ -101,6 +108,10 @@ public class AdminController {
             d.setNombre(nombre);
             d.setDescripcion(descripcion);
             d.setImagen(imagen);
+            d.setZona(zona);
+            d.setInteres(interes);
+            d.setPresupuesto(presupuesto);
+
             destinoService.guardar(d);
         });
         return "redirect:/admin/destinos?exito=Destino+actualizado+correctamente";
@@ -161,5 +172,38 @@ public class AdminController {
             return "redirect:/";
         tipService.eliminar(tid);
         return "redirect:/admin/destinos/" + did + "/tips";
+    }
+
+    // ══════════════════════════════════════════════
+    // CRUD USUARIOS
+    // ══════════════════════════════════════════════
+
+    @GetMapping("/usuarios")
+    public String listarUsuarios(HttpSession session, Model model) {
+        if (!esAdmin(session)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("usuarios", usuarioService.listarTodos());
+
+        return "admin/usuarios";
+    }
+
+    @PostMapping("/usuarios/eliminar/{id}")
+    public String eliminarUsuario(HttpSession session,
+            @PathVariable Integer id) {
+        if (!esAdmin(session)) {
+            return "redirect:/";
+        }
+
+        Usuario usuarioActivo = (Usuario) session.getAttribute("usuarioActivo");
+
+        if (usuarioActivo != null && usuarioActivo.getId().equals(id)) {
+            return "redirect:/admin/usuarios?error=No+puedes+eliminar+tu+propio+usuario";
+        }
+
+        usuarioService.eliminar(id);
+
+        return "redirect:/admin/usuarios?exito=Usuario+eliminado+correctamente";
     }
 }

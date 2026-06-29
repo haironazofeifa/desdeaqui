@@ -1,139 +1,271 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Destino - Desde Aquí</title>
+    <title>Admin - Destino</title>
+
     <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Georgia, serif;
-               background: #0b6f9c; color: #2b1a0c; }
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #222;
+        }
 
         .navbar {
-            height: 70px; background: #3e2008;
-            display: flex; align-items: center;
-            padding: 0 24px; gap: 16px;
-            border-bottom: 4px solid #2b1206;
+            height: 65px;
+            background: #263238;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 18px;
         }
-        .logo { color: #f7e2b5; font-size: 20px; font-weight: bold; }
+
+        .logo {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
         .nav-link {
-            color: #f7e2b5; text-decoration: none;
-            padding: 8px 16px; border: 2px solid #8b5a2b; font-size: 14px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 15px;
         }
-        .logout { margin-left: auto; color: #f7e2b5;
-                  text-decoration: none; font-size: 14px; }
+
+        .nav-link:hover,
+        .nav-link.activo {
+            background: #455a64;
+        }
+
+        .logout {
+            margin-left: auto;
+            color: white;
+            text-decoration: none;
+            background: #c62828;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .logout:hover {
+            background: #a81616;
+        }
 
         .contenedor {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 750px;
+            margin: 35px auto;
+            padding: 0 25px;
         }
 
         .panel {
-            background: #f4dfb4;
-            border: 6px solid #5a2d12;
-            padding: 36px;
-            box-shadow: 0 0 0 4px #2b1206;
+            background: white;
+            padding: 28px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         }
 
         .titulo {
-            background: #3e7f20; color: white;
-            text-align: center; font-size: 22px;
-            padding: 10px; border: 4px solid #244b14;
-            margin-bottom: 28px;
+            margin: 0 0 24px 0;
+            font-size: 28px;
+            color: #263238;
         }
 
         label {
-            display: block; font-weight: bold;
-            margin-bottom: 6px; font-size: 15px;
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
         }
 
-        input, textarea {
-            width: 100%; padding: 10px;
-            border: 3px solid #8b5a2b;
-            background: #fff9ee;
-            font-family: Georgia, serif;
-            font-size: 15px; margin-bottom: 20px;
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            margin-bottom: 18px;
         }
 
-        textarea { height: 100px; resize: vertical; }
+        textarea {
+            height: 110px;
+            resize: vertical;
+        }
 
-        .botones { display: flex; gap: 12px; }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
+        }
+
+        .fila {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .ayuda {
+            font-size: 13px;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 18px;
+        }
+
+        .botones {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
 
         .btn-guardar {
-            flex: 1; padding: 14px;
-            background: #3e7f20; color: white;
-            border: 3px solid #244b14;
-            font-family: Georgia, serif;
-            font-size: 16px; font-weight: bold; cursor: pointer;
+            background: #2e7d32;
+            color: white;
+            flex: 1;
         }
-        .btn-guardar:hover { background: #2f6418; }
+
+        .btn-guardar:hover {
+            background: #1b5e20;
+        }
 
         .btn-cancelar {
-            flex: 1; padding: 14px;
-            background: transparent; color: #5a2d12;
-            border: 3px solid #5a2d12;
-            font-family: Georgia, serif;
-            font-size: 16px; cursor: pointer;
-            text-decoration: none; text-align: center;
+            background: #757575;
+            color: white;
+            flex: 1;
         }
-        .btn-cancelar:hover { background: #e8cfa0; }
+
+        .btn-cancelar:hover {
+            background: #555;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="navbar">
-    <div class="logo">Desde Aquí — Admin</div>
-    <a class="nav-link" href="/admin/destinos">Destinos</a>
-    <a class="nav-link" href="/admin/usuarios">Usuarios</a>
-    <a class="logout" href="/logout">Salir</a>
-</div>
+    <div class="navbar">
+        <div class="logo">Desde Aquí | Admin</div>
 
-<div class="contenedor">
-    <div class="panel">
+        <a class="nav-link activo" href="/admin/destinos">Destinos</a>
+        <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+        <a class="nav-link" href="/">Ver sitio</a>
 
-        <!-- El título cambia según si es nuevo o edición -->
-        <div class="titulo"
-             th:text="${destino.id == null} ? 'Nuevo destino' : 'Editar destino'">
+        <a class="logout" href="/logout">Salir</a>
+    </div>
+
+    <div class="contenedor">
+
+        <div class="panel">
+
+            <h1 class="titulo"
+                th:text="${destino.id == null} ? 'Nuevo destino' : 'Editar destino'">
+                Nuevo destino
+            </h1>
+
+            <form method="post"
+                  th:action="${destino.id == null} ? @{/admin/destinos/guardar} : @{/admin/destinos/actualizar/{id}(id=${destino.id})}">
+
+                <label for="nombre">Nombre</label>
+                <input type="text"
+                       id="nombre"
+                       name="nombre"
+                       th:value="${destino.nombre}"
+                       placeholder="Ej: Volcán Arenal"
+                       required>
+
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion"
+                          name="descripcion"
+                          placeholder="Descripción del destino..."
+                          th:text="${destino.descripcion}"
+                          required></textarea>
+
+                <label for="imagen">Imagen</label>
+                <input type="text"
+                       id="imagen"
+                       name="imagen"
+                       th:value="${destino.imagen}"
+                       placeholder="Ej: tamarindo.png">
+
+                <div class="ayuda">
+                    Escribe solo el nombre del archivo. La imagen debe estar en <strong>static/img</strong>.
+                </div>
+
+                <div class="fila">
+
+                    <div>
+                        <label for="zona">Zona</label>
+                        <select id="zona" name="zona">
+                            <option value="">Seleccionar</option>
+                            <option value="pacifico" th:selected="${destino.zona == 'pacifico'}">Pacífico</option>
+                            <option value="caribe" th:selected="${destino.zona == 'caribe'}">Caribe</option>
+                            <option value="norte" th:selected="${destino.zona == 'norte'}">Norte</option>
+                            <option value="sur" th:selected="${destino.zona == 'sur'}">Sur</option>
+                            <option value="valle" th:selected="${destino.zona == 'valle'}">Valle Central</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="interes">Interés</label>
+                        <select id="interes" name="interes">
+                            <option value="">Seleccionar</option>
+                            <option value="playa" th:selected="${destino.interes == 'playa'}">Playa</option>
+                            <option value="aventura" th:selected="${destino.interes == 'aventura'}">Aventura</option>
+                            <option value="naturaleza" th:selected="${destino.interes == 'naturaleza'}">Naturaleza</option>
+                            <option value="cultura" th:selected="${destino.interes == 'cultura'}">Cultura</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="presupuesto">Presupuesto</label>
+                        <select id="presupuesto" name="presupuesto">
+                            <option value="">Seleccionar</option>
+                            <option value="$" th:selected="${destino.presupuesto == '$'}">Bajo</option>
+                            <option value="$$" th:selected="${destino.presupuesto == '$$'}">Medio</option>
+                            <option value="$$$" th:selected="${destino.presupuesto == '$$$'}">Alto</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="botones">
+                    <button class="btn btn-guardar" type="submit">
+                        Guardar
+                    </button>
+
+                    <a class="btn btn-cancelar" href="/admin/destinos">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
         </div>
 
-        <form th:if="${destino.id == null}" method="post" action="/admin/destinos/guardar">
-
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" th:value="${destino.nombre}" required>
-
-            <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion" th:text="${destino.descripcion}"></textarea>
-
-            <label for="imagen">Nombre del archivo de imagen</label>
-            <input type="text" id="imagen" name="imagen" th:value="${destino.imagen}" placeholder="ej: tamarindo.png">
-
-            <div class="botones">
-                <button class="btn-guardar" type="submit">Guardar</button>
-                <a class="btn-cancelar" href="/admin/destinos">Cancelar</a>
-            </div>
-
-        </form>
-
-        <form th:if="${destino.id != null}" method="post"
-              th:action="@{/admin/destinos/actualizar/{id}(id=${destino.id})}">
-
-            <label for="nombre2">Nombre</label>
-            <input type="text" id="nombre2" name="nombre" th:value="${destino.nombre}" required>
-
-            <label for="descripcion2">Descripción</label>
-            <textarea id="descripcion2" name="descripcion" th:text="${destino.descripcion}"></textarea>
-
-            <label for="imagen2">Nombre del archivo de imagen</label>
-            <input type="text" id="imagen2" name="imagen" th:value="${destino.imagen}" placeholder="ej: tamarindo.png">
-
-            <div class="botones">
-                <button class="btn-guardar" type="submit">Guardar</button>
-                <a class="btn-cancelar" href="/admin/destinos">Cancelar</a>
-            </div>
-
-        </form>
-
     </div>
-</div>
+
 </body>
+
 </html>

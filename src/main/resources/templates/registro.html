@@ -46,40 +46,15 @@
             width: 100%;
             height: 85px;
 
-            background-image: url("/img/DesdeAqui.png");
+            background-image: url("/img/crearcuenta.png");
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
 
-            margin-bottom: 8px;
+            margin-bottom: 22px;
 
             color: transparent;
             font-size: 0;
-        }
-
-        .registro-titulo {
-            width: 100%;
-            height: 58px;
-
-            background-image: url("/img/titulo.png");
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: center;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            color: #f7f0d8;
-            font-size: 23px;
-            font-weight: bold;
-            text-align: center;
-
-            text-shadow:
-                2px 2px 0 #1c3d12,
-                3px 3px 0 rgba(0, 0, 0, 0.45);
-
-            margin-bottom: 18px;
         }
 
         .error {
@@ -189,8 +164,6 @@
 
         <div class="registro-logo"></div>
 
-        <div class="registro-titulo">Crear cuenta</div>
-
         <div class="error" th:if="${error}" th:text="${error}"></div>
         <div class="exito" th:if="${exito}" th:text="${exito}"></div>
 
@@ -213,7 +186,7 @@
                    placeholder="Repetí la contraseña" required>
 
             <button class="btn-crear" type="submit">
-                Crear cuenta
+                Crear
             </button>
 
         </form>

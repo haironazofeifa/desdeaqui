@@ -1,7 +1,6 @@
 package com.desdeaqui.controller;
 
 import com.desdeaqui.model.Comentario;
-import com.desdeaqui.model.Destino;
 import com.desdeaqui.model.Tip;
 import com.desdeaqui.model.Usuario;
 import com.desdeaqui.service.ComentarioService;
@@ -70,6 +69,9 @@ public class TipController {
                     mapa.put("autor", tip.getAutor() != null
                             ? tip.getAutor().getNombre()
                             : "Viajero anónimo");
+                    mapa.put("fotoAutor", tip.getAutor() != null
+                            ? tip.getAutor().getFotoPerfil()
+                            : null);
                     mapa.put("hace", tiempoRelativo(tip.getCreadoEn()));
                     mapa.put("totalComentarios", comentarioService.contarPorTip(tip.getId()));
 
@@ -120,6 +122,9 @@ public class TipController {
                     Map<String, Object> mapa = new LinkedHashMap<>();
                     mapa.put("id", c.getId());
                     mapa.put("usuario", c.getUsuario().getNombre());
+                    mapa.put("fotoUsuario", c.getUsuario() != null
+                            ? c.getUsuario().getFotoPerfil()
+                            : null);
                     mapa.put("contenido", c.getContenido());
                     mapa.put("hace", tiempoRelativo(c.getCreadoEn()));
 
@@ -157,6 +162,7 @@ public class TipController {
             Comentario nuevo = comentarioService.guardar(tip, usuario, contenido.trim());
             respuesta.put("id", nuevo.getId()); // ← id necesario para el botón eliminar
             respuesta.put("usuario", usuario.getNombre());
+            respuesta.put("fotoUsuario", usuario.getFotoPerfil());
             respuesta.put("contenido", contenido.trim());
             respuesta.put("hace", "justo ahora");
         });
@@ -221,6 +227,7 @@ public class TipController {
             respuesta.put("ok", true);
             respuesta.put("id", guardado.getId()); // ← devolvé el id
             respuesta.put("autor", usuario.getNombre());
+            respuesta.put("fotoAutor", usuario.getFotoPerfil());
             respuesta.put("contenido", contenido.trim());
             respuesta.put("hace", "justo ahora");
         });

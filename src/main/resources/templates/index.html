@@ -18,9 +18,24 @@
     <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
     <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
 
-    <div class="usuario-navbar">
-      <span th:text="${usuario.nombre}"></span>
-      <a class="btn-logout" href="/logout">Salir</a>
+    <div class="usuario-nav" th:if="${usuario != null}">
+
+      <div class="usuario-info">
+
+        <div class="foto-navbar">
+          <img th:if="${usuario.fotoPerfil != null}" th:src="@{${usuario.fotoPerfil}}" alt="Foto de perfil">
+
+          <span th:unless="${usuario.fotoPerfil != null}">👤</span>
+        </div>
+
+        <span class="usuario-nombre" th:text="${usuario.nombre}">Hairon</span>
+
+      </div>
+
+      <a class="btn-salir" href="/logout">
+        Salir
+      </a>
+
     </div>
   </div>
 
@@ -144,24 +159,31 @@
       document.getElementById('modalTips').classList.remove('visible');
     }
 
-    function verTips(categoria) {
+    function verTips(categoria, mantenerScroll = false, silencioso = false) {
       if (!destinoActivoId) {
         alert("Primero seleccioná un destino.");
         return;
       }
 
+      const modalTips = document.getElementById("modalTips");
+      const scrollAnterior = mantenerScroll ? modalTips.scrollTop : 0;
+
       const iconos = {
-        transporte: "🚌",
-        comida: "🍽️",
-        hospedaje: "🏠",
-        lugares: "📍"
+        transporte: "/img/iconotransporte.png",
+        comida: "/img/iconocomida.png",
+        hospedaje: "/img/iconohospedaje.png",
+        lugares: "/img/iconolugarestienesconecer.png"
       };
 
-      document.getElementById("iconoTips").innerText = iconos[categoria] || "💡";
+      document.getElementById("iconoTips").innerHTML =
+        '<img src="' + (iconos[categoria] || "/img/iconotransporte.png") + '" alt="Icono de ' + categoria + '">';
+
       document.getElementById("tituloTips").innerText = "Tips de " + categoria + " — " + destinoActivoNombre;
       document.getElementById("subtituloTips").innerText = "Consejos locales para este destino";
-      document.getElementById("listaTips").innerHTML = "Cargando...";
-      document.getElementById("modalTips").classList.add("visible");
+      if (!silencioso) {
+        document.getElementById("listaTips").innerHTML = "Cargando...";
+      } 
+      modalTips.classList.add("visible");
 
       // Guardamos la categoría activa para usarla al publicar
       document.getElementById("modalTips").dataset.categoria = categoria;
@@ -172,17 +194,37 @@
         .then(tips => {
           const lista = document.getElementById("listaTips");
 
+          const firmaTips = JSON.stringify(
+            tips.map(t => ({
+              id: t.id,
+              contenido: t.contenido,
+              totalComentarios: t.totalComentarios,
+              promedio: t.promedio,
+              total: t.total,
+              miPuntuacion: t.miPuntuacion
+            }))
+          );
+
+          if (silencioso && lista.dataset.firmaTips === firmaTips) {
+            return;
+          }
+
+          lista.dataset.firmaTips = firmaTips;
+
           // Formulario para agregar tip — siempre visible arriba
           const formulario = `
         <div class="nuevo-tip-form" id="nuevoTipForm">
           <div class="nuevo-tip-titulo">✏️ Dejá tu propio tip</div>
           <textarea id="textoNuevoTip"
-                    placeholder="Compartí un consejo útil para otros viajeros..."
-                    maxlength="500"
-                    rows="3"></textarea>
+          class="textarea-tip"
+          placeholder="Compartí un consejo útil para otros viajeros..."
+          maxlength="500"
+          rows="3"></textarea>
           <div class="nuevo-tip-acciones">
             <span class="contador-chars" id="contadorTip">0 / 500</span>
-            <button class="btn-publicar-tip" onclick="publicarTip()">Publicar tip</button>
+            <button class="btn-publicar-tip" onclick="publicarTip()" type="button">
+  Publicar tip
+</button>
           </div>
         </div>
         <div class="separador-tips">
@@ -198,7 +240,13 @@
   <div class="tip-card" id="tip-${t.id}">
 
     <div class="tip-meta">
-      <span class="tip-autor">✍️ ${t.autor}</span>
+      <span class="tip-autor">
+  ${t.fotoAutor
+                ? `<img class="avatar-tip" src="${t.fotoAutor}" alt="Foto de ${t.autor}">`
+                : `<span class="avatar-tip avatar-vacio">👤</span>`
+              }
+  <span>${t.autor}</span>
+</span>
       <span class="tip-hace">${t.hace}</span>
       ${t.esMio ? `
         <button class="btn-eliminar-tip"
@@ -240,7 +288,9 @@
                     placeholder="Escribí tu comentario..."
                     maxlength="500"
                     rows="2"></textarea>
-          <button class="btn-publicar" onclick="publicarComentario(${t.id})">Publicar</button>
+          <button class="btn-publicar btn-publicar-comentario" onclick="publicarComentario(${t.id})" type="button">
+  Publicar
+</button>
         </div>
       </div>
     </div>
@@ -255,6 +305,12 @@
             textarea.addEventListener("input", () => {
               document.getElementById("contadorTip").textContent =
                 textarea.value.length + " / 500";
+            });
+          }
+
+          if (mantenerScroll) {
+            requestAnimationFrame(() => {
+              modalTips.scrollTop = scrollAnterior;
             });
           }
         })
@@ -294,37 +350,7 @@
 
           if (data.error) return;
 
-          // Limpia el textarea y el contador
-          textarea.value = "";
-          document.getElementById("contadorTip").textContent = "0 / 500";
-
-          // Inserta el nuevo tip al inicio de la lista, después del formulario
-          const separador = document.querySelector(".separador-tips");
-          const nuevoTip = document.createElement("div");
-          nuevoTip.className = "tip-card tip-nuevo";
-          nuevoTip.innerHTML = `
-  <div class="tip-meta">
-    <span class="tip-autor">✍️ ${data.autor}</span>
-    <span class="tip-hace">${data.hace}</span>
-    <button class="btn-eliminar-tip"
-            onclick="eliminarTip(${data.id})"
-            title="Eliminar tip">🗑️</button>
-  </div>
-  <div class="tip-texto">${data.contenido}</div>
-  <div class="tip-valoracion">
-    <span class="estrellas-promedio">Sin valoraciones aún</span>
-    <div class="estrellas-seleccion"></div>
-  </div>
-  <div class="comentarios-seccion">
-    <button class="btn-ver-comentarios">💬 Comentar</button>
-  </div>
-`;
-
-          // Actualiza el texto del separador
-          const totalActual = document.querySelectorAll(".tip-card").length;
-          separador.textContent = totalActual + " tip" + (totalActual > 1 ? "s" : "") + " de la comunidad";
-
-          separador.insertAdjacentElement("afterend", nuevoTip);
+          verTips(categoria);
         });
     }
 
@@ -349,50 +375,97 @@
     }
 
     function toggleComentarios(tipId, total) {
-      const cuerpo = document.getElementById('cuerpo-comentarios-' + tipId);
-      const abierto = cuerpo.style.display !== 'none';
+      const cuerpo = document.getElementById("cuerpo-comentarios-" + tipId);
+      const abierto = cuerpo.style.display !== "none";
 
       if (abierto) {
-        cuerpo.style.display = 'none';
+        cuerpo.style.display = "none";
         return;
       }
 
-      cuerpo.style.display = 'block';
+      cuerpo.style.display = "block";
 
-      const lista = document.getElementById('lista-comentarios-' + tipId);
-      if (lista.dataset.cargado) return;
+      cargarComentarios(tipId);
+    }
 
-      if (total === 0) {
-        lista.innerHTML = '<p class="sin-comentarios">Sé el primero en comentar.</p>';
-        lista.dataset.cargado = 'true';
-        return;
+    function actualizarBotonComentarios(tipId, total) {
+      const btn = document.querySelector("#comentarios-" + tipId + " .btn-ver-comentarios");
+
+      if (btn) {
+        btn.textContent = total > 0
+          ? "💬 " + total + " comentario" + (total > 1 ? "s" : "")
+          : "💬 Comentar";
       }
+    }
 
-      lista.innerHTML = '<p class="cargando-comentarios">Cargando...</p>';
+    function cargarComentarios(tipId) {
+      const modal = document.getElementById("modalTips");
+      const lista = document.getElementById("lista-comentarios-" + tipId);
 
-      fetch('/api/tips/' + tipId + '/comentarios')
+      if (!lista) return;
+
+      // Guardamos la posición actual antes de actualizar
+      const scrollModal = modal ? modal.scrollTop : 0;
+      const scrollLista = lista.scrollTop;
+
+      lista.innerHTML = '<p class="cargando-comentarios">Cargando comentarios...</p>';
+
+      fetch("/api/tips/" + tipId + "/comentarios")
         .then(r => r.json())
         .then(comentarios => {
+
+          actualizarBotonComentarios(tipId, comentarios.length);
+
+          if (comentarios.length === 0) {
+            lista.innerHTML = '<p class="sin-comentarios">Sé el primero en comentar.</p>';
+            lista.dataset.cargado = "true";
+
+            if (modal) modal.scrollTop = scrollModal;
+            lista.scrollTop = scrollLista;
+
+            return;
+          }
+
           lista.innerHTML = comentarios.map(c => `
-  <div class="comentario-item" id="comentario-${c.id}">
-    <div class="comentario-meta">
-      <span class="comentario-usuario">👤 ${c.usuario}</span>
-      <span class="comentario-hace">${c.hace}</span>
-      ${c.esMio ? `
-        <button class="btn-eliminar-comentario"
-                onclick="eliminarComentario(${c.id}, ${tipId})"
-                title="Eliminar comentario">🗑️</button>
-      ` : ""}
-    </div>
-    <div class="comentario-texto">${c.contenido}</div>
-  </div>
-`).join("");
-          lista.dataset.cargado = 'true';
+        <div class="comentario-item" id="comentario-${c.id}">
+          <div class="comentario-meta">
+
+            <span class="comentario-usuario">
+              ${c.fotoUsuario
+              ? `<img class="avatar-comentario" src="${c.fotoUsuario}" alt="Foto de ${c.usuario}">`
+              : `<span class="avatar-comentario avatar-vacio">👤</span>`
+            }
+              <span>${c.usuario}</span>
+            </span>
+
+            <span class="comentario-hace">${c.hace}</span>
+
+            ${c.esMio ? `
+              <button class="btn-eliminar-comentario"
+                      onclick="eliminarComentario(${c.id}, ${tipId})"
+                      title="Eliminar comentario">
+                Eliminar
+              </button>
+            ` : ""}
+
+          </div>
+
+          <div class="comentario-texto">${c.contenido}</div>
+        </div>
+      `).join("");
+
+          lista.dataset.cargado = "true";
+
+          // Devolvemos el scroll donde estaba
+          requestAnimationFrame(() => {
+            if (modal) modal.scrollTop = scrollModal;
+            lista.scrollTop = scrollLista;
+          });
         });
     }
 
     function publicarComentario(tipId) {
-      const textarea = document.getElementById('texto-comentario-' + tipId);
+      const textarea = document.getElementById("texto-comentario-" + tipId);
       const contenido = textarea.value.trim();
 
       if (!contenido) {
@@ -400,40 +473,18 @@
         return;
       }
 
-      fetch('/api/tips/' + tipId + '/comentarios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'contenido=' + encodeURIComponent(contenido)
+      fetch("/api/tips/" + tipId + "/comentarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "contenido=" + encodeURIComponent(contenido)
       })
         .then(r => r.json())
         .then(data => {
           if (data.error) return;
 
-          const lista = document.getElementById('lista-comentarios-' + tipId);
-          if (lista.querySelector('.sin-comentarios')) {
-            lista.innerHTML = '';
-          }
+          textarea.value = "";
 
-          const nuevoComentario = document.createElement('div');
-          nuevoComentario.className = 'comentario-item nuevo';
-          nuevoComentario.innerHTML = `
-  <div class="comentario-meta">
-    <span class="comentario-usuario">👤 ${data.usuario}</span>
-    <span class="comentario-hace">${data.hace}</span>
-    <button class="btn-eliminar-comentario"
-            onclick="eliminarComentario(${data.id}, ${tipId})"
-            title="Eliminar comentario">🗑️</button>
-  </div>
-  <div class="comentario-texto">${data.contenido}</div>
-`;
-
-          lista.insertBefore(nuevoComentario, lista.firstChild);
-
-          const btn = document.querySelector('#comentarios-' + tipId + ' .btn-ver-comentarios');
-          const totalActual = lista.querySelectorAll('.comentario-item').length;
-          btn.textContent = '💬 ' + totalActual + (totalActual > 1 ? ' comentarios' : ' comentario');
-
-          textarea.value = '';
+          cargarComentarios(tipId);
         });
     }
 
@@ -468,18 +519,10 @@
         .then(data => {
           if (data.error) return;
 
-          // Remueve la tarjeta del DOM
-          const card = document.getElementById("tip-" + tipId);
-          if (card) card.remove();
+          const modal = document.getElementById("modalTips");
+          const categoria = modal.dataset.categoria;
 
-          // Actualiza el contador del separador
-          const total = document.querySelectorAll(".tip-card").length;
-          const separador = document.querySelector(".separador-tips");
-          if (separador) {
-            separador.textContent = total > 0
-              ? total + " tip" + (total > 1 ? "s" : "") + " de la comunidad"
-              : "Sé el primero en dejar un tip";
-          }
+          verTips(categoria);
         });
     }
 
@@ -491,23 +534,7 @@
         .then(data => {
           if (data.error) return;
 
-          // Remueve el comentario del DOM
-          const item = document.getElementById("comentario-" + comentarioId);
-          if (item) item.remove();
-
-          // Actualiza el contador del botón
-          const lista = document.getElementById("lista-comentarios-" + tipId);
-          const total = lista.querySelectorAll(".comentario-item").length;
-          const btn = document.querySelector("#comentarios-" + tipId + " .btn-ver-comentarios");
-          if (btn) {
-            btn.textContent = total > 0
-              ? "💬 " + total + " comentario" + (total > 1 ? "s" : "")
-              : "💬 Comentar";
-          }
-
-          if (total === 0) {
-            lista.innerHTML = '<p class="sin-comentarios">Sé el primero en comentar.</p>';
-          }
+          cargarComentarios(tipId);
         });
     }
   </script>
@@ -528,6 +555,41 @@
         document.querySelector(".perfil-btn")?.classList.add("activo");
       }
     });
+    setInterval(() => {
+      const modal = document.getElementById("modalTips");
+
+      if (!modal || !modal.classList.contains("visible")) return;
+
+      const activo = document.activeElement;
+
+      const estaEscribiendo =
+        activo &&
+        modal.contains(activo) &&
+        (activo.tagName === "TEXTAREA" || activo.tagName === "INPUT");
+
+      if (estaEscribiendo) return;
+
+      const categoria = modal.dataset.categoria;
+
+      if (!categoria) return;
+
+      // Si hay comentarios abiertos, actualizamos comentarios
+      let hayComentariosAbiertos = false;
+
+      document.querySelectorAll(".comentarios-cuerpo").forEach(cuerpo => {
+        if (cuerpo.style.display !== "none") {
+          hayComentariosAbiertos = true;
+          const tipId = cuerpo.id.replace("cuerpo-comentarios-", "");
+          cargarComentarios(tipId);
+        }
+      });
+
+      // Si NO hay comentarios abiertos, actualizamos la lista de tips
+      if (!hayComentariosAbiertos) {
+        verTips(categoria, true, true);
+      }
+
+    }, 10000);
   </script>
 </body>
 
