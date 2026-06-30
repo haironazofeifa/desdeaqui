@@ -7,105 +7,170 @@
   <link rel="stylesheet" th:href="@{/css/estilos.css}">
 
   <style>
-    
     .contenedor {
       height: calc(100vh - 80px);
       background-image: url("/img/fondoMar.png");
       background-size: cover;
       background-position: center;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 30px;
+
+      padding: 25px;
+      overflow: hidden;
     }
 
     .panel-guardados {
-      width: 1000px;
-      height: 650px;
-      background: #f4dfb4;
-      border: 6px solid #5a2d12;
-      padding: 30px;
-      box-shadow: 0 0 0 4px #2b1206;
-      overflow: auto;
+      width: 1150px;
+      height: 700px;
+
+      background-image: url("/img/guardadoslista.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      padding: 55px 90px 55px 90px;
+
+      overflow: hidden;
     }
 
-    .titulo {
+    .titulo-guardados {
+      width: 520px;
+      height: 80px;
+
+      margin: 20px auto 12px auto;
+
+      background-image: url("/img/titulo.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #f7f0d8;
+      font-size: 27px;
+      font-weight: bold;
       text-align: center;
-      font-size: 32px;
-      color: white;
-      background: #3e7f20;
-      padding: 15px;
-      border: 4px solid #244b14;
-      margin-bottom: 25px;
+
+      text-shadow:
+        2px 2px 0 #1c3d12,
+        3px 3px 0 rgba(0, 0, 0, 0.45);
     }
 
     .subtitulo {
       text-align: center;
-      font-size: 18px;
-      margin-bottom: 25px;
+      font-size: 17px;
+      color: #4b250f;
+      margin-bottom: 22px;
+      font-weight: bold;
+    }
+
+    .lista-guardados {
+      height: 415px;
+      overflow-y: auto;
+
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      padding-right: 10px;
     }
 
     .destino {
-      background: #f8e3b3;
+      background: rgba(248, 227, 179, 0.88);
       border: 4px solid #5a2d12;
-      margin-bottom: 18px;
-      padding: 15px;
-      display: flex;
+      box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+
+      padding: 12px 16px;
+
+      display: grid;
+      grid-template-columns: 130px 1fr 230px;
+      gap: 18px;
       align-items: center;
-      justify-content: space-between;
     }
 
-    .icono {
-      font-size: 52px;
-      width: 80px;
-      text-align: center;
+    .destino-img {
+      width: 130px;
+      height: 95px;
+
+      border: 4px solid #8b5a2b;
+      background: #d8b77b;
+
+      overflow: hidden;
     }
 
-    .info {
-      flex: 1;
-      margin-left: 20px;
+    .destino-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .info h2 {
-      margin: 0;
-      font-size: 26px;
+      margin: 0 0 8px 0;
+      font-size: 25px;
+      color: #3b210f;
     }
 
     .info p {
-      margin: 5px 0 0;
-      font-size: 16px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.35;
+      color: #4b250f;
     }
 
     .acciones {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
     }
 
-    .ver,
-    .eliminar {
-      padding: 12px 18px;
-      border: 3px solid #5a2d12;
-      font-family: Georgia, serif;
-      font-weight: bold;
+    .acciones form {
+      margin: 0;
+      width: 100%;
+    }
+
+    .btn-img-guardado {
+      width: 210px;
+      height: 58px;
+
+      border: none;
+      background-color: transparent;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      color: transparent;
+      font-size: 0;
+
       cursor: pointer;
+      display: block;
     }
 
     .ver {
-      background: #3e7f20;
-      color: white;
+      background-image: url("/img/verenelmapa.png");
     }
 
     .eliminar {
-      background: #a32d2d;
-      color: white;
+      background-image: url("/img/eliminar.png");
     }
 
-    .ver:hover {
-      background: #2f6418;
+    .btn-img-guardado:hover {
+      transform: scale(1.03);
     }
 
-    .eliminar:hover {
-      background: #7e1d1d;
+    .vacio {
+      text-align: center;
+      font-size: 18px;
+      color: #5a2d12;
+      background: rgba(248, 227, 179, 0.88);
+      border: 4px solid #5a2d12;
+      padding: 30px;
+      margin-top: 25px;
     }
   </style>
 </head>
@@ -120,38 +185,74 @@
     <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
     <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
 
-    <!-- Nombre del usuario y logout -->
-    <span th:text="${usuario.nombre}" style="color:#f7e2b5; margin-left:auto;"></span>
-    <a href="/logout" style="color:#f7e2b5; margin-left:16px; text-decoration:none;">Salir</a>
+    <div class="usuario-navbar" th:if="${usuario != null}">
+
+  <div class="usuario-info">
+
+    <div class="foto-navbar">
+      <img th:if="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}"
+           th:src="@{${usuario.fotoPerfil}}"
+           alt="Foto de perfil">
+
+      <span th:unless="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}">👤</span>
+    </div>
+
+    <span class="usuario-nombre" th:text="${usuario.nombre}">Usuario</span>
+
+  </div>
+
+  <a class="btn-salir" href="/logout">
+    Salir
+  </a>
+
+</div>
   </div>
 
   <div class="contenedor">
 
     <div class="panel-guardados">
 
-      <div class="titulo">⭐ Mis destinos guardados</div>
+      <div class="titulo-guardados">Mis destinos guardados</div>
 
       <div class="subtitulo">
-        Aquí puedes ver los lugares que marcaste para visitar después.
+        Lugares que marcaste para visitar después.
       </div>
 
-      <div th:if="${#lists.isEmpty(guardados)}" class="subtitulo">
+      <div th:if="${#lists.isEmpty(guardados)}" class="vacio">
         Aún no tienes destinos guardados.
       </div>
-      <div th:each="g : ${guardados}" class="destino">
-        <div class="icono">🗺️</div>
 
-        <div class="info">
-          <h2 th:text="${g.destino.nombre}">Destino</h2>
-          <p th:text="${g.destino.descripcion}">Descripción</p>
+      <div class="lista-guardados">
+
+        <div th:each="g : ${guardados}" class="destino">
+
+          <div class="destino-img">
+            <img th:if="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}"
+              th:src="@{/img/{imagen}(imagen=${g.destino.imagen})}" th:alt="${g.destino.nombre}">
+
+            <img th:unless="${g.destino.imagen != null and !g.destino.imagen.isEmpty()}" src="/img/fondo5.jpeg"
+              alt="Imagen predeterminada">
+          </div>
+
+          <div class="info">
+            <h2 th:text="${g.destino.nombre}">Destino</h2>
+            <p th:text="${g.destino.descripcion}">Descripción</p>
+          </div>
+
+          <div class="acciones">
+            <button class="btn-img-guardado ver" type="button" onclick="window.location.href='/'">
+              Ver en mapa
+            </button>
+
+            <form method="post" th:action="@{/guardados/eliminar/{id}(id=${g.id})}">
+              <button class="btn-img-guardado eliminar" type="submit">
+                Eliminar
+              </button>
+            </form>
+          </div>
+
         </div>
 
-        <div class="acciones">
-          <button class="ver" onclick="window.location.href='/'">Ver en mapa</button>
-          <form method="post" th:action="@{/guardados/eliminar/{id}(id=${g.id})}">
-            <button class="eliminar" type="submit">Eliminar</button>
-          </form>
-        </div>
       </div>
 
     </div>
@@ -179,6 +280,7 @@
       }
     });
   </script>
+
 </body>
 
 </html>

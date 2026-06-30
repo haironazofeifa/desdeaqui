@@ -112,6 +112,108 @@ body {
 }
 
 /* =========================
+   MODAL BONITO DE TIPS
+========================= */
+
+.modal-tips {
+    position: fixed;
+    top: 145px;
+    right: 390px;
+    width: 430px;
+    max-height: 620px;
+    overflow-y: auto;
+    background: #f8e3b3;
+    border: 5px solid #8b5a2b;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    padding: 18px;
+    z-index: 999;
+    display: none;
+}
+
+.modal-tips.visible {
+    display: block;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background: #7f2020;
+    color: #fff7d8;
+    border: 3px solid #3b1208;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-right: 38px;
+}
+
+.modal-icono {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ead09a;
+    border: 3px solid #8b5a2b;
+    font-size: 25px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #3b210f;
+    font-size: 19px;
+}
+
+.modal-header p {
+    margin: 3px 0 0 0;
+    color: #7b4b22;
+    font-size: 13px;
+}
+
+.lista-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tip-card {
+    background: #fff1c9;
+    border: 3px solid #c4923e;
+    padding: 12px;
+    color: #3b210f;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.tip-card strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #5a2d12;
+}
+
+.tip-card p {
+    margin: 0;
+}
+
+.tip-vacio {
+    background: #fff1c9;
+    border: 3px dashed #c4923e;
+    padding: 18px;
+    color: #8b5a2b;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* =========================
    USUARIO Y SALIR
 ========================= */
 
@@ -164,38 +266,81 @@ body {
 }
 
 /*Seleccionar destino*/
-.titulo {
-    background: #3e7f20;
-    color: white;
-    text-align: center;
-    font-size: 28px;
-    padding: 7px;
-    border: 4px solid #244b14;
-    margin-bottom: 14px;
-}
+/* =========================
+   TITULO DEL DESTINO CON IMAGEN
+========================= */
 
-.foto {
-    height: 135px;
-    background: linear-gradient(#50b9e8, #2d9b64);
-    border: 4px solid #8b5a2b;
-    margin-bottom: 12px;
+.titulo,
+.titulo-destino {
+    width: 115%;
+    height: 72px;
+
+    margin: -8px auto 12px auto;
+    transform: translateX(-7%);
+
+    background-image: url("/img/titulo.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    border: none;
+    background-color: transparent;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+
+    color: #f7f0d8;
+    text-align: center;
+    font-size: 23px;
+    font-weight: bold;
+    font-family: Georgia, serif;
+
+    text-shadow:
+        2px 2px 0 #1c3d12,
+        3px 3px 0 rgba(0, 0, 0, 0.45);
+
+    padding: 0 45px;
+    white-space: nowrap;
+}
+
+.foto,
+.foto-destino {
+    width: 90%;
+    height: 170px;
+
+    margin: 0 auto 5px auto;
+
+    background: linear-gradient(#50b9e8, #2d9b64);
+    border: 4px solid #8b5a2b;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
     overflow: hidden;
 }
 
-.foto img {
+.foto img,
+.foto-destino img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.descripcion {
-    font-size: 15px;
-    line-height: 1.25;
-    margin-bottom: 12px;
+.descripcion,
+.descripcion-destino {
+    width: 88%;
+    margin: 0 auto 16px auto;
+
+    font-size: 14px;
+    line-height: 1.35;
+
+    text-align: center;
+    color: #2b1a0c;
+
+    padding: 6px 8px;
 }
 
 .boton-libro {
@@ -235,7 +380,7 @@ body {
 
 
 .guardar {
-    margin-top: 18px;
+    margin-top: -20px;
     width: 92%;
     height: 95px;
     display: block;
@@ -275,8 +420,8 @@ body {
 }
 
 .tips-contenido {
-    background: #b20c0c;
-    border: 6px solid #5a1212;
+    background: #f4dfb4;
+    border: 6px solid #5a2d12;
     width: 500px;
     max-height: 70vh;
     overflow-y: auto;
@@ -327,7 +472,7 @@ body {
 
 .panel-destino {
     width: 430px;
-    min-height: 720px;
+    min-height: 600px;
     background-image: url("/img/cuaderno.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -339,40 +484,8 @@ body {
 
     transform: translate(-10px, -18px);
 }
+/*El otro libro*/
 
-.titulo-destino {
-    background: #3e7f20;
-    color: white;
-    text-align: center;
-    font-size: 25px;
-    padding: 9px;
-    border: 4px solid #244b14;
-    margin-bottom: 14px;
-}
-
-.foto-destino {
-    height: 145px;
-    background: linear-gradient(#50b9e8, #2d9b64);
-    border: 4px solid #8b5a2b;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 46px;
-    overflow: hidden;
-}
-
-.foto-destino img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.descripcion-destino {
-    font-size: 15px;
-    line-height: 1.25;
-    margin-bottom: 14px;
-}
 
 .boton-tip {
     width: 100%;
@@ -388,8 +501,9 @@ body {
     font-size: 0;
 }
 
-.boton-tip:hover {
-    background-color: rgba(248, 228, 186, 0.55);
+.boton-libro:hover {
+    background-color: transparent;
+    transform: scale(1.02);
 }
 
 .tip-transporte {
@@ -406,4 +520,509 @@ body {
 
 .tip-lugares {
     background-image: url("/img/tipsLugares.png");
+}
+
+/* =========================
+   Estrellas puntacion 
+========================= */
+
+.tip-card {
+  background: #f8e3b3;
+  border: 3px solid #c4923e;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.tip-texto {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.tip-valoracion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #5a2d12;
+  margin-top: 8px;
+  border-top: 1px solid #c4923e;
+  padding-top: 8px;
+}
+
+.estrellas-promedio {
+  font-size: 12px;
+  color: #5a2d12;
+}
+
+.estrellas-seleccion {
+  display: flex;
+  gap: 2px;
+}
+
+.estrella {
+  font-size: 22px;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.15s;
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.estrella.activa { color: #e6a817; }
+.estrella:hover  { color: #e6a817; }
+
+.tip-vacio {
+  text-align: center;
+  padding: 30px;
+  color: #8b5a2b;
+  font-size: 15px;
+}
+
+/* =========================
+   Tips de usuario nombre y fecha 
+========================= */ 
+
+.tip-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #7a4a24;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #c4923e;
+}
+
+.tip-autor { font-weight: bold; }
+
+.tip-hace  { opacity: 0.75; font-style: italic; }
+
+/* =========================
+   Tips de usuario nombre y fecha 
+========================= */ 
+
+.btn-ver-comentarios {
+  background: none;
+  border: none;
+  color: #1a6b8a;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0 2px;
+  font-weight: bold;
+}
+.btn-ver-comentarios:hover { text-decoration: underline; }
+
+.comentarios-cuerpo {
+  margin-top: 10px;
+  border-top: 1px dashed #c4923e;
+  padding-top: 10px;
+}
+
+.comentario-item {
+  background: #fffbf0;
+  border-left: 3px solid #c4923e;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.comentario-item.nuevo {
+  border-left-color: #3e7f20;
+  background: #f0faeb;
+}
+
+.comentario-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #7a4a24;
+  margin-bottom: 4px;
+}
+
+.comentario-usuario { font-weight: bold; }
+.comentario-hace    { font-style: italic; opacity: 0.75; }
+
+.comentario-texto { font-size: 13px; line-height: 1.4; color: #2b1a0c; }
+
+.sin-comentarios,
+.cargando-comentarios {
+  font-size: 12px;
+  color: #8b5a2b;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+.nuevo-comentario {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nuevo-comentario textarea {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #8b5a2b;
+  background: #fff9ee;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.nuevo-comentario textarea:focus {
+  outline: none;
+  border-color: #3e7f20;
+}
+
+.btn-publicar {
+  align-self: flex-end;
+  background: #3e7f20;
+  color: white;
+  border: 2px solid #244b14;
+  padding: 7px 18px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-publicar:hover { background: #2f6418; }
+
+/* =========================
+   eliminar comentario 
+========================= */ 
+
+.btn-eliminar-tip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.5;
+  padding: 0;
+  margin-left: auto;
+  transition: opacity 0.15s;
+}
+.btn-eliminar-tip:hover { opacity: 1; }
+
+.btn-eliminar-comentario {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.4;
+  padding: 0;
+  margin-left: auto;
+  transition: opacity 0.15s;
+}
+.btn-eliminar-comentario:hover { opacity: 1; }
+
+/* =========================
+   area de comentario 
+========================= */ 
+.textarea-tip {
+    width: 100%;
+    height: 95px;
+
+    padding: 10px;
+    border: 3px solid #5a2d12;
+    background: #fff9ee;
+
+    font-family: Georgia, serif;
+    font-size: 15px;
+    color: #2b1a0c;
+
+    resize: none;
+    box-sizing: border-box;
+}
+
+.usuario-nav {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usuario-info {
+  width: 260px;
+  height: 58px;
+
+  background-image: url("/img/barranombre.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-left: 28px;
+  padding-right: 18px;
+  gap: 10px;
+}
+
+.foto-navbar {
+  width: 38px;
+  height: 38px;
+
+  border: 3px solid #8b5a2b;
+  background: #fff3d5;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.foto-navbar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.usuario-nombre {
+  color: #f7f0d8;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Georgia, serif;
+
+  text-shadow:
+    2px 2px 0 #1c3d12,
+    3px 3px 0 rgba(0, 0, 0, 0.45);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-salir {
+  width: 120px;
+  height: 52px;
+
+  background-image: url("/img/salir.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: block;
+
+  color: transparent;
+  font-size: 0;
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.btn-salir:hover {
+  transform: scale(1.04);
+}
+
+/* =========================
+   ICONOS Y BOTONES DE TIPS
+========================= */
+
+.modal-icono {
+  width: 58px;
+  height: 58px;
+
+  background: transparent;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.modal-icono img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Formulario para dejar tip */
+.nuevo-tip-form {
+  background: #fff1c9;
+  border: 3px solid #c4923e;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.nuevo-tip-titulo {
+  font-weight: bold;
+  color: #5a2d12;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.nuevo-tip-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.contador-chars {
+  color: #7a4a24;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Botón Publicar tip con imagen */
+.btn-publicar-tip {
+  width: 80px;
+  height: 32px;
+
+  background-image: url("/img/publicartip.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-color: transparent;
+  border: none;
+
+  color: transparent;
+  font-size: 0;
+
+  cursor: pointer;
+
+  position: relative;
+  left: -205px;
+}
+
+.btn-publicar-tip:hover {
+  transform: scale(1.04);
+}
+
+.btn-publicar-tip:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+/* Botón publicar comentario usando la misma imagen */
+.btn-publicar-comentario {
+  width: 80px;
+  height: 42px;
+
+  background-image: url("/img/publicar.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-color: transparent;
+  border: none;
+
+  color: transparent;
+  font-size: 0;
+
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.btn-publicar-comentario:hover {
+  transform: scale(1.04);
+}
+
+/* =========================
+   BOTÓN ELIMINAR CON IMAGEN
+========================= */
+
+.btn-eliminar-tip {
+  width: 28px;
+  height: 28px;
+
+  background-image: url("/img/eliminar2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-color: transparent;
+  border: none;
+
+  color: transparent;
+  font-size: 0;
+
+  cursor: pointer;
+  opacity: 1;
+}
+
+.btn-eliminar-tip:hover {
+  transform: scale(1.08);
+}
+
+.btn-eliminar-comentario {
+  width: 30px;
+  height: 30px;
+
+  background-image: url("/img/eliminar2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-color: transparent;
+  border: none;
+
+  color: transparent;
+  font-size: 0;
+
+  cursor: pointer;
+  opacity: 1;
+}
+
+.btn-eliminar-comentario:hover {
+  transform: scale(1.08);
+}
+
+/* =========================
+   FOTOS EN TIPS Y COMENTARIOS
+========================= */
+
+.tip-autor,
+.comentario-usuario {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+}
+
+.avatar-tip,
+.avatar-comentario {
+  width: 26px;
+  height: 26px;
+
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 2px solid #8b5a2b;
+  background: #fff3d5;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.avatar-comentario {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+
+.avatar-vacio {
+  color: #5a2d12;
 }

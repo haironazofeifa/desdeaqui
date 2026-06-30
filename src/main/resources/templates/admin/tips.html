@@ -1,175 +1,364 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Tips - Desde Aquí</title>
+    <title>Admin - Tips</title>
+
     <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Georgia, serif;
-               background: #0b6f9c; color: #2b1a0c; }
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #222;
+        }
 
         .navbar {
-            height: 70px; background: #3e2008;
-            display: flex; align-items: center;
-            padding: 0 24px; gap: 16px;
-            border-bottom: 4px solid #2b1206;
+            height: 65px;
+            background: #263238;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 18px;
         }
-        .logo { color: #f7e2b5; font-size: 20px; font-weight: bold; }
-        .nav-link {
-            color: #f7e2b5; text-decoration: none;
-            padding: 8px 16px; border: 2px solid #8b5a2b; font-size: 14px;
-        }
-        .logout { margin-left: auto; color: #f7e2b5;
-                  text-decoration: none; font-size: 14px; }
 
-        .contenedor { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .logo {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .nav-link:hover,
+        .nav-link.activo {
+            background: #455a64;
+        }
+
+        .logout {
+            margin-left: auto;
+            color: white;
+            text-decoration: none;
+            background: #c62828;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .logout:hover {
+            background: #a81616;
+        }
+
+        .contenedor {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 25px;
+        }
 
         .cabecera {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
         }
-        .cabecera h1 { margin: 0; color: #f7e2b5; font-size: 24px; }
+
+        .cabecera h1 {
+            margin: 0;
+            font-size: 30px;
+            color: #263238;
+        }
+
+        .volver {
+            color: white;
+            background: #757575;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .volver:hover {
+            background: #555;
+        }
 
         .panel {
-            background: #f4dfb4;
-            border: 5px solid #5a2d12;
-            padding: 28px;
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             margin-bottom: 24px;
         }
 
         .panel h2 {
-            margin: 0 0 20px;
-            font-size: 18px;
-            color: #3e7f20;
+            margin: 0 0 18px 0;
+            color: #263238;
+            font-size: 24px;
         }
 
         label {
-            display: block; font-weight: bold;
-            margin-bottom: 6px; font-size: 14px;
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
         }
 
-        input, textarea, select {
-            width: 100%; padding: 9px;
-            border: 3px solid #8b5a2b;
-            background: #fff9ee;
-            font-family: Georgia, serif;
-            font-size: 14px; margin-bottom: 16px;
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            margin-bottom: 18px;
         }
 
-        textarea { height: 80px; resize: vertical; }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
+        }
+
+        .btn {
+            border: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+            font-weight: bold;
+        }
 
         .btn-agregar {
-            background: #3e7f20; color: white;
-            border: 3px solid #244b14;
-            padding: 11px 22px;
-            font-family: Georgia, serif;
-            font-size: 15px; font-weight: bold; cursor: pointer;
+            background: #2e7d32;
         }
 
-        .tip-item {
-            background: #f8e3b3;
-            border: 3px solid #c4923e;
-            padding: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
+        .btn-agregar:hover {
+            background: #1b5e20;
         }
 
-        .tip-info { flex: 1; }
+        .btn-editar {
+            background: #1976d2;
+        }
 
-        .tip-categoria {
+        .btn-editar:hover {
+            background: #0d47a1;
+        }
+
+        .btn-eliminar {
+            background: #c62828;
+        }
+
+        .btn-eliminar:hover {
+            background: #8e0000;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            background: #37474f;
+            color: white;
+            text-align: left;
+            padding: 13px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .categoria {
             display: inline-block;
-            background: #1a6b8a; color: white;
-            padding: 3px 10px; font-size: 12px;
-            margin-bottom: 6px;
+            padding: 5px 9px;
+            border-radius: 5px;
+            background: #00897b;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: capitalize;
         }
 
-        .tip-contenido { font-size: 14px; line-height: 1.4; }
-
-        .btn-eliminar-tip {
-            background: #a32d2d; color: white;
-            border: 2px solid #7e1d1d;
-            padding: 7px 12px;
-            font-family: Georgia, serif;
-            font-size: 13px; cursor: pointer;
-            white-space: nowrap;
+        .contenido-tip {
+            max-width: 520px;
+            line-height: 1.4;
         }
 
-        .volver {
-            color: #f7e2b5; text-decoration: none; font-size: 14px;
+        .acciones {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .volver:hover { text-decoration: underline; }
+
+        .acciones form {
+            margin: 0;
+        }
 
         .sin-tips {
-            text-align: center; color: #8b5a2b;
-            font-size: 15px; padding: 20px;
+            padding: 25px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .info-destino {
+            margin-bottom: 18px;
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-weight: bold;
         }
     </style>
 </head>
+
 <body>
 
-<div class="navbar">
-    <div class="logo">Desde Aquí — Admin</div>
-    <a class="nav-link" href="/admin/destinos">Destinos</a>
-    <a class="logout" href="/logout">Salir</a>
-</div>
+    <div class="navbar">
+        <div class="logo">Desde Aquí | Admin</div>
 
-<div class="contenedor">
+        <a class="nav-link" href="/admin/destinos">Destinos</a>
+        <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+        <a class="nav-link" href="/">Ver sitio</a>
 
-    <div class="cabecera">
-        <h1>Tips — <span th:text="${destino.nombre}"></span></h1>
-        <a class="volver" href="/admin/destinos">← Volver a destinos</a>
+        <a class="logout" href="/logout">Salir</a>
     </div>
 
-    <!-- Formulario para agregar nuevo tip -->
-    <div class="panel">
-        <h2>Agregar tip</h2>
+    <div class="contenedor">
 
-        <form method="post"
-              th:action="@{/admin/destinos/{id}/tips/guardar(id=${destino.id})}">
+        <div class="cabecera">
+            <h1>Gestión de tips</h1>
 
-            <label for="categoria">Categoría</label>
-            <select id="categoria" name="categoria" required>
-                <option value="">-- Seleccioná --</option>
-                <option value="transporte">🚍 Transporte</option>
-                <option value="comida">🍽️ Comida</option>
-                <option value="hospedaje">🏠 Hospedaje</option>
-                <option value="lugares">📍 Lugares</option>
-            </select>
-
-            <label for="contenido">Contenido del tip</label>
-            <textarea id="contenido" name="contenido"
-                      placeholder="Escribí el consejo..." required></textarea>
-
-            <button class="btn-agregar" type="submit">Agregar tip</button>
-
-        </form>
-    </div>
-
-    <!-- Lista de tips existentes -->
-    <div class="panel">
-        <h2>Tips actuales</h2>
-
-        <div th:if="${#lists.isEmpty(tips)}" class="sin-tips">
-            Este destino no tiene tips todavía.
+            <a class="volver" href="/admin/destinos">
+                ← Volver a destinos
+            </a>
         </div>
 
-        <div th:each="tip : ${tips}" class="tip-item">
-            <div class="tip-info">
-                <span class="tip-categoria" th:text="${tip.categoria}"></span>
-                <div class="tip-contenido" th:text="${tip.contenido}"></div>
-            </div>
+        <div class="info-destino">
+            Destino: <span th:text="${destino.nombre}">Nombre del destino</span>
+        </div>
+
+        <div class="panel">
+            <h2>Agregar tip</h2>
+
             <form method="post"
-                  th:action="@{/admin/destinos/{did}/tips/eliminar/{tid}(did=${destino.id},tid=${tip.id})}"
-                  onsubmit="return confirm('¿Eliminar este tip?')">
-                <button class="btn-eliminar-tip" type="submit">Eliminar</button>
+                  th:action="@{/admin/destinos/{id}/tips/guardar(id=${destino.id})}">
+
+                <label for="categoria">Categoría</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="">Seleccionar categoría</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="comida">Comida</option>
+                    <option value="hospedaje">Hospedaje</option>
+                    <option value="lugares">Lugares</option>
+                </select>
+
+                <label for="contenido">Contenido del tip</label>
+                <textarea id="contenido"
+                          name="contenido"
+                          placeholder="Escribí el consejo para este destino..."
+                          required></textarea>
+
+                <button class="btn btn-agregar" type="submit">
+                    Agregar tip
+                </button>
             </form>
         </div>
 
+        <div class="panel">
+            <h2>Tips actuales</h2>
+
+            <div th:if="${tips == null or #lists.isEmpty(tips)}" class="sin-tips">
+                Este destino no tiene tips todavía.
+            </div>
+
+            <div class="tabla-contenedor" th:if="${tips != null and !#lists.isEmpty(tips)}">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Categoría</th>
+                            <th>Contenido</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="tip : ${tips}">
+                            <td th:text="${tip.id}">1</td>
+
+                            <td>
+                                <span class="categoria" th:text="${tip.categoria}">
+                                    transporte
+                                </span>
+                            </td>
+
+                            <td class="contenido-tip" th:text="${tip.contenido}">
+                                Contenido del tip
+                            </td>
+
+                            <td>
+                                <div class="acciones">
+
+                                    <form method="post"
+                                          th:action="@{/admin/destinos/{did}/tips/eliminar/{tid}(did=${destino.id}, tid=${tip.id})}"
+                                          onsubmit="return confirm('¿Eliminar este tip?')">
+
+                                        <button class="btn btn-eliminar" type="submit">
+                                            Eliminar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
     </div>
 
-</div>
 </body>
+
 </html>

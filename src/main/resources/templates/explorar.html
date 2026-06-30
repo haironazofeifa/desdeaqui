@@ -6,10 +6,9 @@
   <title>Explorar - Desde Aquí</title>
   <link rel="stylesheet" th:href="@{/css/estilos.css}">
   <style>
-
     .contenedor {
       display: grid;
-      grid-template-columns: 280px 1fr 430px;
+      grid-template-columns: 320px 1fr 430px;
       gap: 18px;
       padding: 20px;
       height: calc(100vh - 80px);
@@ -19,80 +18,259 @@
       overflow: hidden;
     }
 
+    /* =========================   FILTROS EXPLORAR ORDENADOS========================= */
     .filtros {
-      width: 280px;
-      background: #f4dfb4;
-      border: 5px solid #5a2d12;
-      padding: 20px;
-      overflow-y: auto;
-      box-shadow: 0 0 0 4px #2b1206;
+      width: 490px;
+      height: 95%;
+
+      background-image: url("/img/fondofiltrar.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      border: none;
+      box-shadow: none;
+
+      padding: 34px 28px 28px 28px;
+      overflow: hidden;
+
+      transform: translateX(-95px);
     }
 
+    /* Título con imagen */
     .filtros h2 {
-      background: #3e7f20;
-      color: white;
+      width: 70%;
+      height: 62px;
+      margin: 0 auto 8px auto;
+      background-image: url("/img/titulo.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f7f0d8;
+      font-size: 20px;
+      font-weight: bold;
       text-align: center;
-      padding: 8px;
-      border: 3px solid #244b14;
-      margin: 0 0 20px;
-      font-size: 18px;
+      text-shadow: 2px 2px 0 #1c3d12, 3px 3px 0 rgba(0, 0, 0, 0.35);
     }
 
+    /* Cada sección */
     .grupo {
-      margin-bottom: 18px;
+      margin-bottom: 3px;
+      padding-bottom: 4px;
+      border-bottom: none;
+      position: relative;
+    }
+
+    .grupo::after {
+      content: "";
+      display: block;
+
+      width: 60%;
+      height: 2px;
+
+      background: rgba(139, 77, 31, 0.35);
+
+      margin: 12px auto 0 auto;
     }
 
     .grupo h3 {
-      margin: 0 0 10px;
-      font-size: 15px;
+      display: block;
+      margin: 0 0 10px 100px;
+      font-size: 20px;
+      color: #3b210f;
+      font-weight: bold;
     }
 
+    /* Contenedor general de botones */
     .opciones {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 5px;
     }
 
+    /* Botones de imagen */
     .opcion {
-      background: #f6d99b;
-      border: 3px solid #9b6729;
-      padding: 8px 12px;
+      width: 120px;
+      height: 48px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      color: transparent;
+      font-size: 0;
       cursor: pointer;
-      font-family: Georgia, serif;
-      font-size: 13px;
-      font-weight: bold;
-      color: #2b1a0c;
+      padding: 0;
     }
 
     .opcion:hover {
-      background: #9ccc65;
-      border-color: #2f7a1f;
+      transform: scale(1.04);
     }
 
     .opcion.activa {
-      background: #9ccc65;
-      border-color: #2f7a1f;
+      transform: scale(1.05);
+      filter: brightness(1.08) drop-shadow(0 0 5px #8ee36b);
     }
 
+    /* Zona: botones normales */
+    .btn-pacifico {
+      position: relative;
+      left: 70px;
+      width: 100px;
+      height: 48px;
+    }
+
+    .btn-norte {
+      position: relative;
+      left: 22px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-caribe {
+      position: relative;
+      left: 50px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-sur {
+      position: relative;
+      left: 120px;
+      width: 120px;
+      height: 48px;
+    }
+
+    /* Valle es más largo */
+    .btn-valle {
+      width: 135px;
+      height: 48px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Intereses */
+    .btn-playa {
+      position: relative;
+      left: 90px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-aventura,
+    .btn-naturaleza,
+    .btn-cultura {
+
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-aventura {
+      position: relative;
+      left: 90px;
+    }
+
+    /* Cultura centrado si queda solo */
+    .btn-cultura {
+      position: relative;
+      left: 0px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Presupuesto más pequeño */
+    .btn-bajo,
+    .btn-medio,
+    .btn-alto {
+      width: 82px;
+      height: 52px;
+    }
+
+    /* Acomoda presupuesto en una fila */
+    .grupo:nth-of-type(3) .opciones {
+      justify-content: center;
+    }
+
+    /* Botón limpiar */
     .btn-limpiar {
-      width: 100%;
-      padding: 11px;
-      background: transparent;
-      color: #5a2d12;
-      border: 3px solid #5a2d12;
-      font-family: Georgia, serif;
-      font-size: 14px;
+      width: 250px;
+      height: 50px;
+      display: block;
+      margin: 18px auto 0 auto;
+      background-image: url("/img/limpiar.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      color: transparent;
+      font-size: 0;
       cursor: pointer;
-      margin-top: 8px;
-      font-weight: bold;
     }
 
     .btn-limpiar:hover {
-      background: #e8cfa0;
+      transform: scale(1.03);
+    }
+
+    /* Zona */
+    .btn-pacifico {
+      background-image: url("/img/pacifico.png");
+    }
+
+    .btn-caribe {
+      background-image: url("/img/caribe.png");
+    }
+
+    .btn-norte {
+      background-image: url("/img/norte.png");
+    }
+
+    .btn-sur {
+      background-image: url("/img/sur.png");
+    }
+
+    .btn-valle {
+      background-image: url("/img/valle.png");
+    }
+
+    /* Intereses */
+    .btn-playa {
+      background-image: url("/img/playa.png");
+    }
+
+    .btn-aventura {
+      background-image: url("/img/aventura.png");
+    }
+
+    .btn-naturaleza {
+      background-image: url("/img/naturaleza.png");
+    }
+
+    .btn-cultura {
+      background-image: url("/img/cultura.png");
+    }
+
+    /* Presupuesto */
+    .btn-bajo {
+      background-image: url("/img/bajoprecio.png");
+    }
+
+    .btn-medio {
+      background-image: url("/img/medioprecio.png");
+    }
+
+    .btn-alto {
+      background-image: url("/img/altoprecio.png");
     }
 
     .resultados {
       flex: 1;
+      height: 95%;
       background: #f4dfb4;
       border: 5px solid #5a2d12;
       padding: 20px;
@@ -309,9 +487,25 @@
     <button class="guar-btn" onclick="window.location.href='/guardados'">Guardados</button>
     <button class="perfil-btn" onclick="window.location.href='/perfil'">Perfil</button>
 
-    <div class="usuario-navbar">
-      <span th:text="${usuario.nombre}">Usuario</span>
-      <a class="btn-logout" href="/logout">Salir</a>
+    <div class="usuario-navbar" th:if="${usuario != null}">
+
+      <div class="usuario-info">
+
+        <div class="foto-navbar">
+          <img th:if="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}" th:src="@{${usuario.fotoPerfil}}"
+            alt="Foto de perfil">
+
+          <span th:unless="${usuario.fotoPerfil != null and !usuario.fotoPerfil.isEmpty()}">👤</span>
+        </div>
+
+        <span class="usuario-nombre" th:text="${usuario.nombre}">Usuario</span>
+
+      </div>
+
+      <a class="btn-salir" href="/logout">
+        Salir
+      </a>
+
     </div>
   </div>
 
@@ -323,80 +517,86 @@
       <div class="grupo">
         <h3>Zona</h3>
         <div class="opciones">
-          <button type="button" class="opcion" data-clave="zona" data-valor="pacifico"
+
+          <button type="button" class="opcion btn-pacifico" data-clave="zona" data-valor="pacifico"
             th:classappend="${zonaActiva == 'pacifico'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Pacífico
           </button>
 
-          <button type="button" class="opcion" data-clave="zona" data-valor="caribe"
+          <button type="button" class="opcion btn-caribe" data-clave="zona" data-valor="caribe"
             th:classappend="${zonaActiva == 'caribe'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Caribe
           </button>
 
-          <button type="button" class="opcion" data-clave="zona" data-valor="norte"
+          <button type="button" class="opcion btn-norte" data-clave="zona" data-valor="norte"
             th:classappend="${zonaActiva == 'norte'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Norte
           </button>
 
-          <button type="button" class="opcion" data-clave="zona" data-valor="sur"
+          <button type="button" class="opcion btn-sur" data-clave="zona" data-valor="sur"
             th:classappend="${zonaActiva == 'sur'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Sur
           </button>
 
-          <button type="button" class="opcion" data-clave="zona" data-valor="valle"
+          <button type="button" class="opcion btn-valle" data-clave="zona" data-valor="valle"
             th:classappend="${zonaActiva == 'valle'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Valle
           </button>
+
         </div>
       </div>
 
       <div class="grupo">
         <h3>Interés</h3>
         <div class="opciones">
-          <button type="button" class="opcion" data-clave="interes" data-valor="playa"
+
+          <button type="button" class="opcion btn-playa" data-clave="interes" data-valor="playa"
             th:classappend="${interesActivo == 'playa'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Playa
           </button>
 
-          <button type="button" class="opcion" data-clave="interes" data-valor="aventura"
+          <button type="button" class="opcion btn-aventura" data-clave="interes" data-valor="aventura"
             th:classappend="${interesActivo == 'aventura'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Aventura
           </button>
 
-          <button type="button" class="opcion" data-clave="interes" data-valor="naturaleza"
+          <button type="button" class="opcion btn-naturaleza" data-clave="interes" data-valor="naturaleza"
             th:classappend="${interesActivo == 'naturaleza'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Naturaleza
           </button>
 
-          <button type="button" class="opcion" data-clave="interes" data-valor="cultura"
+          <button type="button" class="opcion btn-cultura" data-clave="interes" data-valor="cultura"
             th:classappend="${interesActivo == 'cultura'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             Cultura
           </button>
+
         </div>
       </div>
 
       <div class="grupo">
         <h3>Presupuesto</h3>
         <div class="opciones">
-          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$"
+
+          <button type="button" class="opcion btn-bajo" data-clave="presupuesto" data-valor="$"
             th:classappend="${presupuestoActivo == '$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             $
           </button>
 
-          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$$"
+          <button type="button" class="opcion btn-medio" data-clave="presupuesto" data-valor="$$"
             th:classappend="${presupuestoActivo == '$$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             $$
           </button>
 
-          <button type="button" class="opcion" data-clave="presupuesto" data-valor="$$$"
+          <button type="button" class="opcion btn-alto" data-clave="presupuesto" data-valor="$$$"
             th:classappend="${presupuestoActivo == '$$$'} ? ' activa' : ''" onclick="aplicarFiltroDesdeBoton(this)">
             $$$
           </button>
+
         </div>
       </div>
 
       <button class="btn-limpiar" type="button" onclick="window.location.href='/explorar'">
-        ↩ Limpiar filtros
+        Limpiar filtros
       </button>
     </aside>
 
@@ -456,7 +656,7 @@
         </div>
 
         <div class="foto-destino" id="fotoDestino">
-          🗺️
+          <img src="/img/fondo5.jpeg" alt="Imagen predeterminada">
         </div>
 
         <div class="descripcion-destino" id="descripcionDestino">
@@ -491,7 +691,9 @@
     <div id="modalTips" class="modal-tips">
       <button class="cerrar-modal" type="button" onclick="cerrarTips()">×</button>
       <div class="modal-header">
-        <div class="modal-icono" id="iconoTips">🚌</div>
+        <div class="modal-icono" id="iconoTips">
+          <img src="/img/iconotransporte.png" alt="Icono tips">
+        </div>
         <div>
           <h3 id="tituloTips">Tips locales</h3>
           <p id="subtituloTips">Consejos de viajeros locales</p>
@@ -549,7 +751,7 @@
       if (imagen && imagen.trim() !== "") {
         foto.innerHTML = '<img src="/img/' + imagen + '" alt="' + nombre + '">';
       } else {
-        foto.innerHTML = "🗺️";
+        foto.innerHTML = '<img src="/img/fondo5.jpeg" alt="Imagen predeterminada">';
       }
 
       cerrarTips();
@@ -568,55 +770,383 @@
       document.getElementById("modalTips").classList.remove("visible");
     }
 
-    function verTips(categoria) {
+    function verTips(categoria, mantenerScroll = false, silencioso = false) {
       if (!destinoActivoId) {
         alert("Primero seleccioná un destino.");
         return;
       }
 
+      const modalTips = document.getElementById("modalTips");
+      const scrollAnterior = mantenerScroll ? modalTips.scrollTop : 0;
+
       const iconos = {
-        transporte: "🚌",
-        comida: "🍽️",
-        hospedaje: "🏠",
-        lugares: "📍"
+        transporte: "/img/iconotransporte.png",
+        comida: "/img/iconocomida.png",
+        hospedaje: "/img/iconohospedaje.png",
+        lugares: "/img/iconolugarestienesconecer.png"
       };
 
+      document.getElementById("iconoTips").innerHTML =
+        '<img src="' + (iconos[categoria] || "/img/iconotransporte.png") + '" alt="Icono de ' + categoria + '">';
+
+      document.getElementById("tituloTips").innerText = "Tips de " + categoria + " — " + destinoActivoNombre;
+      document.getElementById("subtituloTips").innerText = "Consejos locales para este destino";
+      if (!silencioso) {
+        document.getElementById("listaTips").innerHTML = "Cargando...";
+      }
+      modalTips.classList.add("visible");
+
+      // Guardamos la categoría activa para usarla al publicar
+      document.getElementById("modalTips").dataset.categoria = categoria;
+      document.getElementById("modalTips").dataset.destinoId = destinoActivoId;
+
       fetch("/api/tips?destinoId=" + destinoActivoId + "&categoria=" + encodeURIComponent(categoria))
-        .then(response => response.json())
+        .then(r => r.json())
         .then(tips => {
-          const modal = document.getElementById("modalTips");
-          const titulo = document.getElementById("tituloTips");
-          const subtitulo = document.getElementById("subtituloTips");
           const lista = document.getElementById("listaTips");
-          const icono = document.getElementById("iconoTips");
 
-          icono.innerText = iconos[categoria] || "💡";
-          titulo.innerText = "Tips de " + categoria + " - " + destinoActivoNombre;
-          subtitulo.innerText = "Consejos locales para este destino";
-          lista.innerHTML = "";
+          const firmaTips = JSON.stringify(
+            tips.map(t => ({
+              id: t.id,
+              contenido: t.contenido,
+              totalComentarios: t.totalComentarios,
+              promedio: t.promedio,
+              total: t.total,
+              miPuntuacion: t.miPuntuacion
+            }))
+          );
 
-          if (tips.length === 0) {
-            lista.innerHTML = `
-              <div class="tip-vacio">
-                No hay tips para esta categoría.
-              </div>
-            `;
-          } else {
-            tips.forEach(tip => {
-              lista.innerHTML += `
-                <div class="tip-card">
-                  <strong>Consejo local</strong>
-                  <p>${tip.contenido}</p>
-                </div>
-              `;
-            });
+          if (silencioso && lista.dataset.firmaTips === firmaTips) {
+            return;
           }
 
-          modal.classList.add("visible");
+          lista.dataset.firmaTips = firmaTips;
+
+          // Formulario para agregar tip — siempre visible arriba
+          const formulario = `
+        <div class="nuevo-tip-form" id="nuevoTipForm">
+          <div class="nuevo-tip-titulo">✏️ Dejá tu propio tip</div>
+          <textarea id="textoNuevoTip"
+          class="textarea-tip"
+          placeholder="Compartí un consejo útil para otros viajeros..."
+          maxlength="500"></textarea>
+          <div class="nuevo-tip-acciones">
+            <span class="contador-chars" id="contadorTip">0 / 500</span>
+            <button class="btn-publicar-tip" onclick="publicarTip()" type="button">
+  Publicar tip
+</button>
+          </div>
+        </div>
+        <div class="separador-tips">
+          ${tips.length > 0 ? tips.length + " tip" + (tips.length > 1 ? "s" : "") + " de la comunidad" : "Sé el primero en dejar un tip"}
+        </div>
+      `;
+
+          if (tips.length === 0) {
+            lista.innerHTML = formulario +
+              '<div class="tip-vacio">Aún no hay tips en esta categoría.</div>';
+          } else {
+            lista.innerHTML = formulario + tips.map(t => `
+  <div class="tip-card" id="tip-${t.id}">
+
+    <div class="tip-meta">
+      <span class="tip-autor">
+  ${t.fotoAutor
+                ? `<img class="avatar-tip" src="${t.fotoAutor}" alt="Foto de ${t.autor}">`
+                : `<span class="avatar-tip avatar-vacio">👤</span>`
+              }
+  <span>${t.autor}</span>
+</span>
+      <span class="tip-hace">${t.hace}</span>
+      ${t.esMio ? `
+        <button class="btn-eliminar-tip"
+                onclick="eliminarTip(${t.id})"
+                title="Eliminar tip">🗑️</button>
+      ` : ""}
+    </div>
+
+    <div class="tip-texto">${t.contenido}</div>
+
+    <div class="tip-valoracion">
+      <span class="estrellas-promedio" id="promedio-${t.id}">
+        ${renderEstrellasFijas(t.promedio)}
+        ${t.promedio > 0
+                ? t.promedio.toFixed(1) + " (" + t.total + " valoraciones)"
+                : "Sin valoraciones aún"}
+      </span>
+      <div class="estrellas-seleccion" id="seleccion-${t.id}">
+        ${[1, 2, 3, 4, 5].map(n => `
+          <button class="estrella ${n <= t.miPuntuacion ? "activa" : ""}"
+                  onclick="puntuar(${t.id}, ${n})"
+                  onmouseover="resaltarHasta(${t.id}, ${n})"
+                  onmouseout="restaurar(${t.id})">★</button>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="comentarios-seccion" id="comentarios-${t.id}">
+      <button class="btn-ver-comentarios"
+              onclick="toggleComentarios(${t.id}, ${t.totalComentarios})">
+        💬 ${t.totalComentarios > 0
+                ? t.totalComentarios + " comentario" + (t.totalComentarios > 1 ? "s" : "")
+                : "Comentar"}
+      </button>
+      <div class="comentarios-cuerpo" id="cuerpo-comentarios-${t.id}" style="display:none">
+        <div class="lista-comentarios" id="lista-comentarios-${t.id}"></div>
+        <div class="nuevo-comentario">
+          <textarea id="texto-comentario-${t.id}"
+                    placeholder="Escribí tu comentario..."
+                    maxlength="500"
+                    rows="2"></textarea>
+          <button class="btn-publicar btn-publicar-comentario"
+        onclick="publicarComentario(${t.id})"
+        type="button">
+  Publicar
+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+`).join("");
+          }
+
+          // Contador de caracteres del textarea de nuevo tip
+          const textarea = document.getElementById("textoNuevoTip");
+          if (textarea) {
+            textarea.addEventListener("input", () => {
+              document.getElementById("contadorTip").textContent =
+                textarea.value.length + " / 500";
+            });
+          }
+          if (mantenerScroll) {
+            requestAnimationFrame(() => {
+              modalTips.scrollTop = scrollAnterior;
+            });
+          }
         })
-        .catch(error => {
-          console.log(error);
-          alert("No se pudieron cargar los tips.");
+        .catch(() => {
+          document.getElementById("listaTips").innerHTML =
+            '<div class="tip-vacio">No se pudieron cargar los tips.</div>';
+        });
+    }
+
+    function publicarTip() {
+      const modal = document.getElementById("modalTips");
+      const categoria = modal.dataset.categoria;
+      const destinoId = modal.dataset.destinoId;
+      const textarea = document.getElementById("textoNuevoTip");
+      const contenido = textarea.value.trim();
+
+      if (!contenido) {
+        textarea.focus();
+        return;
+      }
+
+      const btn = document.querySelector(".btn-publicar-tip");
+      btn.disabled = true;
+      btn.textContent = "Publicando...";
+
+      fetch("/api/tips", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "destinoId=" + destinoId +
+          "&categoria=" + encodeURIComponent(categoria) +
+          "&contenido=" + encodeURIComponent(contenido)
+      })
+        .then(r => r.json())
+        .then(data => {
+          btn.disabled = false;
+          btn.textContent = "Publicar tip";
+
+          if (data.error) return;
+
+          verTips(categoria);
+        });
+    }
+
+    function renderEstrellasFijas(promedio) {
+      return [1, 2, 3, 4, 5].map(n => {
+        const llena = n <= Math.floor(promedio) ||
+          (n === Math.ceil(promedio) && promedio % 1 >= 0.5);
+        return `<span style="color:${llena ? "#e6a817" : "#ccc"}">★</span>`;
+      }).join("");
+    }
+
+    function resaltarHasta(tipId, n) {
+      document.querySelectorAll("#seleccion-" + tipId + " .estrella")
+        .forEach((b, i) => b.style.color = i < n ? "#e6a817" : "#ccc");
+    }
+
+    function restaurar(tipId) {
+      document.querySelectorAll("#seleccion-" + tipId + " .estrella")
+        .forEach(b => {
+          b.style.color = b.classList.contains("activa") ? "#e6a817" : "#ccc";
+        });
+    }
+
+    function toggleComentarios(tipId, total) {
+      const cuerpo = document.getElementById("cuerpo-comentarios-" + tipId);
+      const abierto = cuerpo.style.display !== "none";
+
+      if (abierto) {
+        cuerpo.style.display = "none";
+        return;
+      }
+
+      cuerpo.style.display = "block";
+
+      cargarComentarios(tipId);
+    }
+
+    function actualizarBotonComentarios(tipId, total) {
+      const btn = document.querySelector("#comentarios-" + tipId + " .btn-ver-comentarios");
+
+      if (btn) {
+        btn.textContent = total > 0
+          ? "💬 " + total + " comentario" + (total > 1 ? "s" : "")
+          : "💬 Comentar";
+      }
+    }
+
+    function cargarComentarios(tipId) {
+      const modal = document.getElementById("modalTips");
+      const lista = document.getElementById("lista-comentarios-" + tipId);
+
+      if (!lista) return;
+
+      // Guardamos la posición actual antes de actualizar
+      const scrollModal = modal ? modal.scrollTop : 0;
+      const scrollLista = lista.scrollTop;
+
+      lista.innerHTML = '<p class="cargando-comentarios">Cargando comentarios...</p>';
+
+      fetch("/api/tips/" + tipId + "/comentarios")
+        .then(r => r.json())
+        .then(comentarios => {
+
+          actualizarBotonComentarios(tipId, comentarios.length);
+
+          if (comentarios.length === 0) {
+            lista.innerHTML = '<p class="sin-comentarios">Sé el primero en comentar.</p>';
+            lista.dataset.cargado = "true";
+
+            if (modal) modal.scrollTop = scrollModal;
+            lista.scrollTop = scrollLista;
+
+            return;
+          }
+
+          lista.innerHTML = comentarios.map(c => `
+        <div class="comentario-item" id="comentario-${c.id}">
+          <div class="comentario-meta">
+
+            <span class="comentario-usuario">
+              ${c.fotoUsuario
+              ? `<img class="avatar-comentario" src="${c.fotoUsuario}" alt="Foto de ${c.usuario}">`
+              : `<span class="avatar-comentario avatar-vacio">👤</span>`
+            }
+              <span>${c.usuario}</span>
+            </span>
+
+            <span class="comentario-hace">${c.hace}</span>
+
+            ${c.esMio ? `
+              <button class="btn-eliminar-comentario"
+                      onclick="eliminarComentario(${c.id}, ${tipId})"
+                      title="Eliminar comentario">
+                Eliminar
+              </button>
+            ` : ""}
+
+          </div>
+
+          <div class="comentario-texto">${c.contenido}</div>
+        </div>
+      `).join("");
+
+          lista.dataset.cargado = "true";
+
+          // Devolvemos el scroll donde estaba
+          requestAnimationFrame(() => {
+            if (modal) modal.scrollTop = scrollModal;
+            lista.scrollTop = scrollLista;
+          });
+        });
+    }
+
+    function publicarComentario(tipId) {
+      const textarea = document.getElementById("texto-comentario-" + tipId);
+      const contenido = textarea.value.trim();
+
+      if (!contenido) {
+        textarea.focus();
+        return;
+      }
+
+      fetch("/api/tips/" + tipId + "/comentarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "contenido=" + encodeURIComponent(contenido)
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return;
+
+          textarea.value = "";
+
+          cargarComentarios(tipId);
+        });
+    }
+
+    function puntuar(tipId, estrellas) {
+      fetch("/api/tips/" + tipId + "/puntuar", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "estrellas=" + estrellas
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return;
+
+          document.querySelectorAll("#seleccion-" + tipId + " .estrella")
+            .forEach((b, i) => {
+              b.classList.toggle("activa", i < estrellas);
+              b.style.color = i < estrellas ? "#e6a817" : "#ccc";
+            });
+
+          document.getElementById("promedio-" + tipId).innerHTML =
+            renderEstrellasFijas(data.promedio) + " " +
+            (data.promedio > 0
+              ? data.promedio.toFixed(1) + " (" + data.total + " valoraciones)"
+              : "Sin valoraciones aún");
+        });
+    }
+
+    function eliminarTip(tipId) {
+      if (!confirm("¿Eliminar este tip?")) return;
+
+      fetch("/api/tips/" + tipId + "/eliminar", { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return;
+
+          const modal = document.getElementById("modalTips");
+          const categoria = modal.dataset.categoria;
+
+          verTips(categoria);
+        });
+    }
+
+    function eliminarComentario(comentarioId, tipId) {
+      if (!confirm("¿Eliminar este comentario?")) return;
+
+      fetch("/api/comentarios/" + comentarioId + "/eliminar", { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return;
+
+          cargarComentarios(tipId);
         });
     }
 
@@ -634,6 +1164,41 @@
     if (rutaActual.startsWith("/perfil")) {
       document.querySelector(".perfil-btn")?.classList.add("activo");
     }
+    setInterval(() => {
+      const modal = document.getElementById("modalTips");
+
+      if (!modal || !modal.classList.contains("visible")) return;
+
+      const activo = document.activeElement;
+
+      const estaEscribiendo =
+        activo &&
+        modal.contains(activo) &&
+        (activo.tagName === "TEXTAREA" || activo.tagName === "INPUT");
+
+      if (estaEscribiendo) return;
+
+      const categoria = modal.dataset.categoria;
+
+      if (!categoria) return;
+
+      // Si hay comentarios abiertos, actualizamos comentarios
+      let hayComentariosAbiertos = false;
+
+      document.querySelectorAll(".comentarios-cuerpo").forEach(cuerpo => {
+        if (cuerpo.style.display !== "none") {
+          hayComentariosAbiertos = true;
+          const tipId = cuerpo.id.replace("cuerpo-comentarios-", "");
+          cargarComentarios(tipId);
+        }
+      });
+
+      // Si NO hay comentarios abiertos, actualizamos la lista de tips
+      if (!hayComentariosAbiertos) {
+        verTips(categoria, true, true);
+      }
+
+    }, 10000);
   </script>
 
 </body>

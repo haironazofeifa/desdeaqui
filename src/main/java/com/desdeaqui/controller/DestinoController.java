@@ -4,6 +4,13 @@ import com.desdeaqui.model.Destino;
 import com.desdeaqui.model.Guardado;
 import com.desdeaqui.model.Tip;
 import com.desdeaqui.model.Usuario;
+import com.desdeaqui.service.UsuarioService;
+
+import java.nio.file.Path;
+import com.desdeaqui.repository.GuardadoRepository;
+import com.desdeaqui.repository.TipRepository;
+import com.desdeaqui.repository.ComentarioRepository;
+import com.desdeaqui.repository.PuntuacionTipRepository;
 import com.desdeaqui.service.DestinoService;
 import com.desdeaqui.service.GuardadoService;
 import com.desdeaqui.service.TipService;
@@ -15,7 +22,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Controller
@@ -30,9 +42,29 @@ public class DestinoController {
     @Autowired
     private TipService tipService;
 
+    @Autowired
+    private GuardadoRepository guardadoRepository;
+
+    @Autowired
+    private TipRepository tipRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private PuntuacionTipRepository puntuacionTipRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping("/")
     public String inicio(HttpSession session, Model model) {
+
         Usuario usuario = (Usuario) session.getAttribute("usuarioActivo");
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
 
         List<Destino> destinos = destinoService.listarTodos();
         List<Guardado> guardados = guardadoService.listarPorUsuario(usuario.getId());
@@ -75,7 +107,12 @@ public class DestinoController {
 
     @GetMapping("/guardados")
     public String guardados(HttpSession session, Model model) {
+
         Usuario usuario = (Usuario) session.getAttribute("usuarioActivo");
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
 
         model.addAttribute("usuario", usuario);
         model.addAttribute("guardados", guardadoService.listarPorUsuario(usuario.getId()));
@@ -85,9 +122,22 @@ public class DestinoController {
 
     @GetMapping("/perfil")
     public String perfil(HttpSession session, Model model) {
+
         Usuario usuario = (Usuario) session.getAttribute("usuarioActivo");
 
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        List<Guardado> guardados = guardadoRepository.findByUsuarioId(usuario.getId());
+
         model.addAttribute("usuario", usuario);
+        model.addAttribute("guardados", guardados);
+
+        model.addAttribute("totalGuardados", guardados.size());
+        model.addAttribute("totalTips", tipRepository.contarPorAutor(usuario.getId()));
+        model.addAttribute("totalComentarios", comentarioRepository.contarPorUsuario(usuario.getId()));
+        model.addAttribute("totalPuntuaciones", puntuacionTipRepository.countByUsuarioId(usuario.getId()));
 
         return "perfil";
     }
@@ -113,5 +163,34 @@ public class DestinoController {
         guardadoService.eliminarPorId(id);
 
         return "redirect:/guardados";
+    }
+
+    @PostMapping("/perfil/foto")
+    public String subirFotoPerfil(@RequestParam("foto") MultipartFile foto,
+            HttpSession session) throws IOException {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioActivo");
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        if (!foto.isEmpty()) {
+            String nombreArchivo = "usuario_" + usuario.getId() + "_" + foto.getOriginalFilename();
+
+            Path carpeta = Paths.get("uploads/perfiles");
+            Files.createDirectories(carpeta);
+
+            Path rutaArchivo = carpeta.resolve(nombreArchivo);
+            Files.copy(foto.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
+
+            usuario.setFotoPerfil("/uploads/perfiles/" + nombreArchivo);
+
+            usuarioService.guardar(usuario);
+
+            session.setAttribute("usuarioActivo", usuario);
+        }
+
+        return "redirect:/perfil";
     }
 }
