@@ -17,7 +17,9 @@ Plataforma web de tips de viaje enfocada en destinos turísticos de Costa Rica.
 | Backend | Java 21, Spring Boot 3.5.15 |
 | Frontend | Thymeleaf, HTML5, CSS3, JavaScript |
 | Base de datos | MySQL 8 |
-| ORM | Spring Data JPA / Hibernate |
+| Persistencia | Spring Data JPA / Hibernate |
+| Arquitectura | MVC por capas |
+| Control de versiones | Git y GitHub |
 
 ---
 
@@ -81,7 +83,9 @@ Abrí el navegador en: `http://localhost:8081`
 
 ## Arquitectura
 
-El sistema usa una arquitectura **MVC por capas**:
+El sistema usa una arquitectura **MVC por capas**, separando responsabilidades entre controladores, servicios, repositorios, modelos y vistas.
+
+Aunque el proyecto fue desarrollado con Spring Boot, mantiene la separación solicitada en el curso: presentación, lógica de negocio y acceso a datos.
 
 ```
 controller/   → Recibe peticiones HTTP y devuelve vistas o JSON
