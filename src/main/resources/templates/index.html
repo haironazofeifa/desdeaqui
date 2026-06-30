@@ -45,10 +45,15 @@
 
       <div class="mapa-wrapper">
         <img src="/img/MapaCostaRica.png" class="imagen-mapa" alt="Mapa de Costa Rica">
-        <button th:each="destino, i : ${destinos}" th:class="'pin p' + (${i.index} + 1)" th:data-id="${destino.id}"
-          th:data-nombre="${destino.nombre}" th:data-imagen="${destino.imagen}"
-          th:data-descripcion="${destino.descripcion}" onclick="seleccionarDestinoDesdeBoton(this)">
-        </button>
+        <button type="button"
+        th:each="destino, i : ${destinos}"
+        th:class="'pin p' + (${i.index} + 1)"
+        th:data-id="${destino.id}"
+        th:data-nombre="${destino.nombre}"
+        th:data-imagen="${destino.imagen}"
+        th:data-descripcion="${destino.descripcion}"
+        onclick="seleccionarDestinoDesdeBoton(this)">
+</button>
       </div>
 
       <!-- Destinos guardados del usuario -->
