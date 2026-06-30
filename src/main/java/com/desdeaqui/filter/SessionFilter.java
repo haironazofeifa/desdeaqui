@@ -62,6 +62,12 @@ public class SessionFilter implements Filter {
             }
         }
 
+        // Evita que el navegador cachee las páginas autenticadas
+        // (esto es lo que causaba que index a veces se viera "roto" la primera vez)
+        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        res.setHeader("Pragma", "no-cache");
+        res.setDateHeader("Expires", 0);
+
         // Revisamos si hay un usuario activo en la sesión
         HttpSession session = req.getSession(false);
         boolean autenticado = session != null
