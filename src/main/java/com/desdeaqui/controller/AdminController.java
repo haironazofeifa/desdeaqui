@@ -12,6 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador encargado de administrar las funciones exclusivas del rol ADMIN.
+ *
+ * Desde esta clase se gestionan los módulos administrativos del sistema:
+ * destinos, tips y usuarios. Todas las rutas inician con "/admin" y verifican
+ * que el usuario tenga el rol ADMIN antes de permitir el acceso.
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -25,17 +32,25 @@ public class AdminController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // ── Verificar rol ──────────────────────────────
+    /**
+     * Verifica si el usuario activo en sesión tiene rol de administrador.
+     *
+     * @param session sesión HTTP actual.
+     * @return true si el rol activo es ADMIN, false en caso contrario.
+     */
     private boolean esAdmin(HttpSession session) {
         String rol = (String) session.getAttribute("rolActivo");
         return "ADMIN".equals(rol);
     }
 
-    // ══════════════════════════════════════════════
+    /// ══════════════════════════════════════════════
     // CRUD DESTINOS
     // ══════════════════════════════════════════════
 
-    // Listar
+    /**
+     * Muestra la lista de destinos registrados en el sistema.
+     * Solo puede acceder un usuario con rol ADMIN.
+     */
     @GetMapping("/destinos")
     public String listarDestinos(HttpSession session, Model model) {
         if (!esAdmin(session))
@@ -44,7 +59,10 @@ public class AdminController {
         return "admin/destinos";
     }
 
-    // Mostrar formulario nuevo
+    /**
+     * Muestra el formulario para registrar un nuevo destino.
+     */
+
     @GetMapping("/destinos/nuevo")
     public String nuevoDestino(HttpSession session, Model model) {
         if (!esAdmin(session))
@@ -53,7 +71,12 @@ public class AdminController {
         return "admin/destino-form";
     }
 
-    // Guardar nuevo
+    /**
+     * Guarda un nuevo destino en la base de datos.
+     *
+     * Recibe los datos enviados desde el formulario administrativo y crea
+     * un objeto Destino para enviarlo al servicio correspondiente.
+     */
     @PostMapping("/destinos/guardar")
     public String guardarDestino(HttpSession session,
             @RequestParam String nombre,
@@ -79,7 +102,11 @@ public class AdminController {
         return "redirect:/admin/destinos?exito=Destino+creado+correctamente";
     }
 
-    // Mostrar formulario editar
+    /**
+     * Muestra el formulario para editar un destino existente.
+     *
+     * @param id identificador del destino a editar.
+     */
     @GetMapping("/destinos/editar/{id}")
     public String editarDestino(HttpSession session,
             @PathVariable Integer id,
@@ -91,7 +118,11 @@ public class AdminController {
         return "admin/destino-form";
     }
 
-    // Guardar edición
+    /**
+     * Actualiza un destino existente en la base de datos.
+     *
+     * @param id identificador del destino a actualizar.
+     */
     @PostMapping("/destinos/actualizar/{id}")
     public String actualizarDestino(HttpSession session,
             @PathVariable Integer id,
@@ -117,7 +148,12 @@ public class AdminController {
         return "redirect:/admin/destinos?exito=Destino+actualizado+correctamente";
     }
 
-    // Eliminar
+    /**
+     * Actualiza los datos de un destino existente.
+     *
+     * Busca el destino por su id, modifica sus atributos y guarda los cambios
+     * mediante el servicio de destinos.
+     */
     @PostMapping("/destinos/eliminar/{id}")
     public String eliminarDestino(HttpSession session,
             @PathVariable Integer id) {
@@ -131,7 +167,11 @@ public class AdminController {
     // CRUD TIPS
     // ══════════════════════════════════════════════
 
-    // Listar tips de un destino
+    /**
+     * Elimina un destino del sistema.
+     *
+     * @param id identificador del destino que se desea eliminar.
+     */
     @GetMapping("/destinos/{id}/tips")
     public String listarTips(HttpSession session,
             @PathVariable Integer id,
@@ -146,7 +186,11 @@ public class AdminController {
         return "admin/tips";
     }
 
-    // Agregar tip
+    /**
+     * Lista los tips asociados a un destino específico.
+     *
+     * @param id identificador del destino.
+     */
     @PostMapping("/destinos/{id}/tips/guardar")
     public String guardarTip(HttpSession session,
             @PathVariable Integer id,
@@ -163,7 +207,12 @@ public class AdminController {
         return "redirect:/admin/destinos/" + id + "/tips";
     }
 
-    // Eliminar tip
+    /**
+     * Elimina un tip de un destino específico.
+     *
+     * @param did identificador del destino.
+     * @param tid identificador del tip.
+     */
     @PostMapping("/destinos/{did}/tips/eliminar/{tid}")
     public String eliminarTip(HttpSession session,
             @PathVariable Integer did,
@@ -178,6 +227,9 @@ public class AdminController {
     // CRUD USUARIOS
     // ══════════════════════════════════════════════
 
+    /**
+     * Muestra la lista de usuarios registrados en el sistema.
+     */
     @GetMapping("/usuarios")
     public String listarUsuarios(HttpSession session, Model model) {
         if (!esAdmin(session)) {
@@ -189,6 +241,15 @@ public class AdminController {
         return "admin/usuarios";
     }
 
+
+    /**
+     * Elimina un usuario del sistema.
+     *
+     * Antes de eliminar, valida que el administrador no pueda eliminar
+     * su propio usuario activo.
+     *
+     * @param id identificador del usuario que se desea eliminar.
+     */
     @PostMapping("/usuarios/eliminar/{id}")
     public String eliminarUsuario(HttpSession session,
             @PathVariable Integer id) {

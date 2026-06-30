@@ -29,7 +29,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-
+/**
+ * Controlador encargado de gestionar las vistas principales del sistema Desde Aquí.
+ *
+ * Esta clase maneja la pantalla de inicio con el mapa, la exploración de destinos,
+ * los destinos guardados, el perfil del usuario y la carga de foto de perfil.
+ *
+ * Utiliza servicios y repositorios para obtener información de destinos, tips,
+ * guardados, comentarios y puntuaciones.
+ */
 @Controller
 public class DestinoController {
 
@@ -57,6 +65,19 @@ public class DestinoController {
     @Autowired
     private UsuarioService usuarioService;
 
+    /**
+     * Muestra la pantalla principal del sistema.
+     *
+     * Verifica que exista un usuario activo en sesión. Si no hay sesión,
+     * redirige al login.
+     *
+     * Carga la lista de destinos, los destinos guardados por el usuario
+     * y un tip destacado del primer destino disponible.
+     *
+     * @param session sesión HTTP actual.
+     * @param model modelo utilizado para enviar datos a la vista.
+     * @return vista principal index.html o redirección al login.
+     */
     @GetMapping("/")
     public String inicio(HttpSession session, Model model) {
 
@@ -85,6 +106,20 @@ public class DestinoController {
         return "index";
     }
 
+    
+    /**
+     * Muestra la pantalla de exploración de destinos.
+     *
+     * Permite filtrar destinos por zona, interés y presupuesto.
+     * Los filtros son opcionales y se envían como parámetros en la URL.
+     *
+     * @param session sesión HTTP actual.
+     * @param zona filtro opcional por zona geográfica.
+     * @param interes filtro opcional por tipo de interés.
+     * @param presupuesto filtro opcional por presupuesto.
+     * @param model modelo utilizado para enviar datos a la vista.
+     * @return vista explorar.html.
+     */
     @GetMapping("/explorar")
     public String explorar(HttpSession session,
             @RequestParam(required = false) String zona,
@@ -105,6 +140,15 @@ public class DestinoController {
         return "explorar";
     }
 
+    /**
+     * Muestra la pantalla de destinos guardados del usuario.
+     *
+     * Si no hay usuario en sesión, redirige al login.
+     *
+     * @param session sesión HTTP actual.
+     * @param model modelo utilizado para enviar datos a la vista.
+     * @return vista guardados.html o redirección al login.
+     */
     @GetMapping("/guardados")
     public String guardados(HttpSession session, Model model) {
 
@@ -120,6 +164,16 @@ public class DestinoController {
         return "guardados";
     }
 
+    /**
+     * Muestra el perfil del usuario autenticado.
+     *
+     * Carga los destinos guardados y las estadísticas del usuario:
+     * cantidad de guardados, tips publicados, comentarios y puntuaciones.
+     *
+     * @param session sesión HTTP actual.
+     * @param model modelo utilizado para enviar datos a la vista.
+     * @return vista perfil.html o redirección al login.
+     */
     @GetMapping("/perfil")
     public String perfil(HttpSession session, Model model) {
 
@@ -142,6 +196,16 @@ public class DestinoController {
         return "perfil";
     }
 
+    /**
+     * Muestra el perfil del usuario autenticado.
+     *
+     * Carga los destinos guardados y las estadísticas del usuario:
+     * cantidad de guardados, tips publicados, comentarios y puntuaciones.
+     *
+     * @param session sesión HTTP actual.
+     * @param model modelo utilizado para enviar datos a la vista.
+     * @return vista perfil.html o redirección al login.
+     */
     @PostMapping("/guardados/agregar")
     public String agregarGuardado(@RequestParam(required = false) Integer destinoId,
             HttpSession session) {
@@ -157,6 +221,12 @@ public class DestinoController {
         return "redirect:/";
     }
 
+    /**
+     * Elimina un destino guardado por su identificador.
+     *
+     * @param id identificador del registro guardado.
+     * @return redirección a la pantalla de guardados.
+     */
     @PostMapping("/guardados/eliminar/{id}")
     public String eliminarGuardado(@PathVariable Integer id) {
 
@@ -165,6 +235,18 @@ public class DestinoController {
         return "redirect:/guardados";
     }
 
+    /**
+     * Permite actualizar la foto de perfil del usuario.
+     *
+     * La imagen se guarda localmente en la carpeta uploads/perfiles.
+     * Luego se almacena en el usuario la ruta pública del archivo para
+     * poder mostrarla en la interfaz.
+     *
+     * @param foto archivo de imagen enviado desde el formulario.
+     * @param session sesión HTTP actual.
+     * @return redirección al perfil del usuario.
+     * @throws IOException si ocurre un error al guardar el archivo.
+     */
     @PostMapping("/perfil/foto")
     public String subirFotoPerfil(@RequestParam("foto") MultipartFile foto,
             HttpSession session) throws IOException {

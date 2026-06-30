@@ -18,6 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador REST encargado de gestionar los tips del sistema.
+ *
+ * Esta clase expone endpoints bajo la ruta "/api" para obtener tips,
+ * publicar tips, puntuar consejos, gestionar comentarios y eliminar
+ * contenido cuando el usuario tenga permisos.
+ *
+ * Las respuestas se devuelven principalmente como mapas o listas de mapas,
+ * permitiendo que el frontend las consuma mediante JavaScript y fetch().
+ */
+
 @RestController
 @RequestMapping("/api")
 public class TipController {
@@ -34,6 +45,18 @@ public class TipController {
     @Autowired
     private DestinoService destinoService;
 
+     /**
+     * Obtiene los tips de un destino según una categoría específica.
+     *
+     * Además del contenido del tip, también devuelve información adicional
+     * como autor, foto del autor, promedio de estrellas, total de puntuaciones,
+     * puntuación del usuario activo, cantidad de comentarios y permisos de eliminación.
+     *
+     * @param destinoId identificador del destino.
+     * @param categoria categoría del tip.
+     * @param session sesión HTTP actual.
+     * @return lista de tips representados como mapas de datos.
+     */
     @GetMapping("/tips")
     public List<Map<String, Object>> obtenerTips(
             @RequestParam Integer destinoId,
@@ -80,6 +103,15 @@ public class TipController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Calcula un texto de tiempo relativo a partir de una fecha.
+     *
+     * Por ejemplo: "justo ahora", "hace 5 min", "hace 2 horas",
+     * "hace 3 días", entre otros.
+     *
+     * @param fecha fecha de creación del registro.
+     * @return texto con el tiempo transcurrido.
+     */
     private String tiempoRelativo(LocalDateTime fecha) {
         if (fecha == null)
             return "hace un tiempo";
@@ -111,6 +143,17 @@ public class TipController {
         return "hace " + años + (años == 1 ? " año" : " años");
     }
 
+    /**
+     * Obtiene los comentarios asociados a un tip.
+     *
+     * Devuelve la información necesaria para mostrar cada comentario en el modal,
+     * incluyendo usuario, foto, contenido, tiempo relativo y si el usuario actual
+     * puede eliminarlo.
+     *
+     * @param id identificador del tip.
+     * @param session sesión HTTP actual.
+     * @return lista de comentarios representados como mapas.
+     */
     @GetMapping("/tips/{id}/comentarios")
     public List<Map<String, Object>> obtenerComentarios(@PathVariable Integer id,
             HttpSession session) {
@@ -138,6 +181,17 @@ public class TipController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Publica un nuevo comentario en un tip.
+     *
+     * Valida que el usuario tenga sesión activa, que el contenido no esté vacío
+     * y que no supere el límite de caracteres permitido.
+     *
+     * @param id identificador del tip.
+     * @param contenido texto del comentario.
+     * @param session sesión HTTP actual.
+     * @return mapa con la respuesta de éxito o error.
+     */
     @PostMapping("/tips/{id}/comentarios")
     public Map<String, Object> publicarComentario(@PathVariable Integer id,
             @RequestParam String contenido,
@@ -170,6 +224,17 @@ public class TipController {
         return respuesta;
     }
 
+    /**
+     * Registra o actualiza la puntuación de un usuario sobre un tip.
+     *
+     * Cada usuario puede puntuar un tip del 1 al 5. Si ya había puntuado antes,
+     * el sistema actualiza la puntuación existente.
+     *
+     * @param id identificador del tip.
+     * @param estrellas cantidad de estrellas asignadas.
+     * @param session sesión HTTP actual.
+     * @return mapa con el nuevo promedio, total de puntuaciones y puntuación del usuario.
+     */
     @PostMapping("/tips/{id}/puntuar")
     public Map<String, Object> puntuar(@PathVariable Integer id,
             @RequestParam Integer estrellas,
@@ -198,7 +263,18 @@ public class TipController {
         return respuesta;
     }
 
-    // ── Viajero publica un tip ──────────────────────────────
+    /**
+     * Permite que un viajero publique un nuevo tip.
+     *
+     * El tip se asocia al destino indicado, a la categoría seleccionada
+     * y al usuario activo en sesión.
+     *
+     * @param destinoId identificador del destino.
+     * @param categoria categoría del tip.
+     * @param contenido texto del tip.
+     * @param session sesión HTTP actual.
+     * @return mapa con la información del tip publicado o un error.
+     */
     @PostMapping("/tips")
     public Map<String, Object> publicarTip(@RequestParam Integer destinoId,
             @RequestParam String categoria,
@@ -235,7 +311,15 @@ public class TipController {
         return respuesta;
     }
 
-    // ── Eliminar tip ────────────────────────────────────────
+    /**
+     * Elimina un tip si el usuario tiene permisos.
+     *
+     * Solo puede eliminarlo el autor del tip o un usuario con rol ADMIN.
+     *
+     * @param id identificador del tip.
+     * @param session sesión HTTP actual.
+     * @return mapa con respuesta de éxito o error.
+     */
     @PostMapping("/tips/{id}/eliminar")
     public Map<String, Object> eliminarTip(@PathVariable Integer id,
             HttpSession session) {
@@ -268,7 +352,15 @@ public class TipController {
         return respuesta;
     }
 
-    // ── Eliminar comentario ─────────────────────────────────
+    /**
+     * Elimina un comentario si el usuario tiene permisos.
+     *
+     * Solo puede eliminarlo el autor del comentario o un usuario administrador.
+     *
+     * @param id identificador del comentario.
+     * @param session sesión HTTP actual.
+     * @return mapa con respuesta de éxito o error.
+     */
     @PostMapping("/comentarios/{id}/eliminar")
     public Map<String, Object> eliminarComentario(@PathVariable Integer id,
             HttpSession session) {
