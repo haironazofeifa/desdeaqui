@@ -6,11 +6,11 @@ import com.desdeaqui.model.Tip;
 import com.desdeaqui.model.Usuario;
 import com.desdeaqui.service.UsuarioService;
 
-import java.nio.file.Path;
 import com.desdeaqui.repository.GuardadoRepository;
 import com.desdeaqui.repository.TipRepository;
 import com.desdeaqui.repository.ComentarioRepository;
 import com.desdeaqui.repository.PuntuacionTipRepository;
+import com.desdeaqui.service.CloudinaryService;
 import com.desdeaqui.service.DestinoService;
 import com.desdeaqui.service.GuardadoService;
 import com.desdeaqui.service.TipService;
@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Controller
@@ -56,6 +53,9 @@ public class DestinoController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @GetMapping("/")
     public String inicio(HttpSession session, Model model) {
@@ -176,15 +176,9 @@ public class DestinoController {
         }
 
         if (!foto.isEmpty()) {
-            String nombreArchivo = "usuario_" + usuario.getId() + "_" + foto.getOriginalFilename();
+            String urlFoto = cloudinaryService.subirImagen(foto, "desdeaqui/perfiles");
 
-            Path carpeta = Paths.get("uploads/perfiles");
-            Files.createDirectories(carpeta);
-
-            Path rutaArchivo = carpeta.resolve(nombreArchivo);
-            Files.copy(foto.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
-
-            usuario.setFotoPerfil("/uploads/perfiles/" + nombreArchivo);
+            usuario.setFotoPerfil(urlFoto);
 
             usuarioService.guardar(usuario);
 

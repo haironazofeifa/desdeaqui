@@ -1,0 +1,320 @@
+.contenedor {
+            height: calc(100vh - 80px);
+            background-image: url("/img/fondoMar.png");
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .perfil {
+            width: 1100px;
+            height: 690px;
+
+            background-image: url("/img/perfilfondo.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            padding: 0px 90px 60px 90px;
+            overflow: hidden;
+        }
+
+        .titulo-perfil {
+            width: 480px;
+            height: 75px;
+
+            margin: 5px auto 20px auto;
+
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #f7f0d8;
+            font-size: 30px;
+            font-weight: bold;
+
+            text-shadow:
+                2px 2px 0 #1c3d12,
+                3px 3px 0 rgba(0, 0, 0, 0.45);
+        }
+
+        .contenido {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 26px;
+            height: 500px;
+
+            position: relative;
+            left: 65px;
+        }
+
+        .tarjeta-usuario {
+            background: rgba(248, 227, 179, 0.88);
+            border: 4px solid #5a2d12;
+            box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+
+            padding: 20px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+
+            margin: 0 auto 16px auto;
+
+            background: #fff3d5;
+            border: 5px solid #8b5a2b;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 80px;
+        }
+
+        .nombre {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3b210f;
+            margin-bottom: 8px;
+        }
+
+        .correo {
+            font-size: 14px;
+            color: #5a2d12;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .rol {
+            width: 230px;
+            height: 80px;
+
+            margin: 10px auto 0 auto;
+
+            background-image: url("/img/tipoViajero.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            border: none;
+            background-color: transparent;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding-left: 55px;
+
+            color: #f7f0d8;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: capitalize;
+
+            text-shadow:
+                2px 2px 0 #1c3d12,
+                3px 3px 0 rgba(0, 0, 0, 0.45);
+
+            position: relative;
+            left: -15px;
+        }
+
+        .derecha {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+        }
+
+        .seccion {
+            background: rgba(248, 227, 179, 0.88);
+            border: 4px solid #5a2d12;
+            box-shadow: 4px 4px 0 rgba(43, 18, 6, 0.35);
+            width: 525px;
+
+            padding: 16px;
+        }
+
+        .seccion h2 {
+            margin: 0 0 14px 0;
+            color: #3b210f;
+            font-size: 24px;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            text-align: center;
+            padding: 12px 8px;
+        }
+
+        .numero {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3e7f20;
+        }
+
+        .texto-stat {
+            font-size: 13px;
+            color: #4b250f;
+            font-weight: bold;
+        }
+
+        .lista-destinos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .destino-card {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            overflow: hidden;
+        }
+
+        .destino-card img {
+            width: 100%;
+            height: 95px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .destino-nombre {
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #3b210f;
+            font-size: 15px;
+        }
+
+        .vacio {
+            background: #fff3d5;
+            border: 3px dashed #8b5a2b;
+            padding: 20px;
+            text-align: center;
+            color: #5a2d12;
+            font-weight: bold;
+        }
+
+        .botones-perfil {
+            margin-top: 18px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-perfil-img {
+            width: 220px;
+            height: 45px;
+
+            border: none;
+            background-color: transparent;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            color: transparent;
+            font-size: 0;
+
+            cursor: pointer;
+            display: block;
+        }
+
+        .btn-editar-foto {
+            background-image: url("/img/editarfoto.png");
+        }
+
+        .btn-cerrar-sesion {
+            background-image: url("/img/cerrarsesion.png");
+        }
+
+        .btn-perfil-img:hover {
+            transform: scale(1.03);
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+
+            margin: 0 auto 16px auto;
+
+            background: #fff3d5;
+            border: 5px solid #8b5a2b;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 80px;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: #fff3d5;
+            border: 3px solid #8b5a2b;
+            text-align: center;
+            padding: 12px 8px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .icono-stat {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .numero {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3e7f20;
+            line-height: 1;
+        }
+
+        .texto-stat {
+            font-size: 13px;
+            color: #4b250f;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        

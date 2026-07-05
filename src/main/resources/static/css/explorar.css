@@ -1,0 +1,468 @@
+.contenedor {
+      display: grid;
+      grid-template-columns: 320px 1fr 430px;
+      gap: 18px;
+      padding: 20px;
+      height: calc(100vh - 80px);
+      background-image: url("/img/fondoMar.png");
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    /* =========================   FILTROS EXPLORAR ORDENADOS========================= */
+    .filtros {
+      width: 490px;
+      height: 95%;
+
+      background-image: url("/img/fondofiltrar.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      border: none;
+      box-shadow: none;
+
+      padding: 34px 28px 28px 28px;
+      overflow: hidden;
+
+      transform: translateX(-95px);
+    }
+
+    /* Título con imagen */
+    .filtros h2 {
+      width: 70%;
+      height: 62px;
+      margin: 0 auto 8px auto;
+      background-image: url("/img/titulo.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f7f0d8;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 2px 2px 0 #1c3d12, 3px 3px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    /* Cada sección */
+    .grupo {
+      margin-bottom: 3px;
+      padding-bottom: 4px;
+      border-bottom: none;
+      position: relative;
+    }
+
+    .grupo::after {
+      content: "";
+      display: block;
+
+      width: 60%;
+      height: 2px;
+
+      background: rgba(139, 77, 31, 0.35);
+
+      margin: 12px auto 0 auto;
+    }
+
+    .grupo h3 {
+      display: block;
+      margin: 0 0 10px 100px;
+      font-size: 20px;
+      color: #3b210f;
+      font-weight: bold;
+    }
+
+    /* Contenedor general de botones */
+    .opciones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    /* Botones de imagen */
+    .opcion {
+      width: 120px;
+      height: 48px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      color: transparent;
+      font-size: 0;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .opcion:hover {
+      transform: scale(1.04);
+    }
+
+    .opcion.activa {
+      transform: scale(1.05);
+      filter: brightness(1.08) drop-shadow(0 0 5px #8ee36b);
+    }
+
+    /* Zona: botones normales */
+    .btn-pacifico {
+      position: relative;
+      left: 70px;
+      width: 100px;
+      height: 48px;
+    }
+
+    .btn-norte {
+      position: relative;
+      left: 22px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-caribe {
+      position: relative;
+      left: 50px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-sur {
+      position: relative;
+      left: 120px;
+      width: 120px;
+      height: 48px;
+    }
+
+    /* Valle es más largo */
+    .btn-valle {
+      width: 135px;
+      height: 48px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Intereses */
+    .btn-playa {
+      position: relative;
+      left: 90px;
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-aventura,
+    .btn-naturaleza,
+    .btn-cultura {
+
+      width: 120px;
+      height: 48px;
+    }
+
+    .btn-aventura {
+      position: relative;
+      left: 90px;
+    }
+
+    /* Cultura centrado si queda solo */
+    .btn-cultura {
+      position: relative;
+      left: 0px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Presupuesto más pequeño */
+    .btn-bajo,
+    .btn-medio,
+    .btn-alto {
+      width: 82px;
+      height: 52px;
+    }
+
+    /* Acomoda presupuesto en una fila */
+    .grupo:nth-of-type(3) .opciones {
+      justify-content: center;
+    }
+
+    /* Botón limpiar */
+    .btn-limpiar {
+      width: 250px;
+      height: 50px;
+      display: block;
+      margin: 18px auto 0 auto;
+      background-image: url("/img/limpiar.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: none;
+      background-color: transparent;
+      color: transparent;
+      font-size: 0;
+      cursor: pointer;
+    }
+
+    .btn-limpiar:hover {
+      transform: scale(1.03);
+    }
+
+    /* Zona */
+    .btn-pacifico {
+      background-image: url("/img/pacifico.png");
+    }
+
+    .btn-caribe {
+      background-image: url("/img/caribe.png");
+    }
+
+    .btn-norte {
+      background-image: url("/img/norte.png");
+    }
+
+    .btn-sur {
+      background-image: url("/img/sur.png");
+    }
+
+    .btn-valle {
+      background-image: url("/img/valle.png");
+    }
+
+    /* Intereses */
+    .btn-playa {
+      background-image: url("/img/playa.png");
+    }
+
+    .btn-aventura {
+      background-image: url("/img/aventura.png");
+    }
+
+    .btn-naturaleza {
+      background-image: url("/img/naturaleza.png");
+    }
+
+    .btn-cultura {
+      background-image: url("/img/cultura.png");
+    }
+
+    /* Presupuesto */
+    .btn-bajo {
+      background-image: url("/img/bajoprecio.png");
+    }
+
+    .btn-medio {
+      background-image: url("/img/medioprecio.png");
+    }
+
+    .btn-alto {
+      background-image: url("/img/altoprecio.png");
+    }
+
+    .resultados {
+      flex: 1;
+      height: 95%;
+      background: #f4dfb4;
+      border: 5px solid #5a2d12;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 0 0 4px #2b1206;
+    }
+
+    .cabecera-resultados {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .filtros-activos {
+      font-size: 13px;
+      color: #5a2d12;
+      margin-bottom: 15px;
+    }
+
+    .grid-destinos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .tarjeta {
+      background: #f8e3b3;
+      border: 4px solid #5a2d12;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #2b1a0c;
+      display: block;
+      transition: transform 0.15s ease;
+    }
+
+    .tarjeta:hover {
+      transform: scale(1.02);
+    }
+
+    .tarjeta h2 {
+      margin: 0;
+      background: #3e7f20;
+      color: white;
+      padding: 8px;
+      font-size: 17px;
+    }
+
+    .tarjeta-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tarjeta-img-placeholder {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(#50b9e8, #2d9b64);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+    }
+
+    .tarjeta-meta {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px;
+      font-size: 12px;
+      background: #edd9a0;
+      border-top: 2px solid #c4923e;
+    }
+
+    .tag {
+      background: #1a6b8a;
+      color: white;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    .descripcion-card {
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .sin-resultados {
+      text-align: center;
+      padding: 50px;
+      color: #8b5a2b;
+      font-size: 16px;
+    }
+
+    .panel-tips {
+      margin-top: 12px;
+      background: #f8e3b3;
+      border: 3px solid #8b5a2b;
+      padding: 10px;
+      max-height: 135px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .panel-tips.visible {
+      display: block;
+    }
+
+    .panel-tips h3 {
+      margin: 0 0 8px;
+      color: #3e7f20;
+      font-size: 16px;
+    }
+
+    .panel-tips p {
+      margin: 7px 0;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .modal-tips {
+      position: fixed;
+      top: 145px;
+      right: 390px;
+      width: 430px;
+      max-height: 620px;
+      overflow-y: auto;
+      background: #f8e3b3;
+      border: 5px solid #8b5a2b;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      padding: 18px;
+      z-index: 999;
+      display: none;
+    }
+
+    .modal-tips.visible {
+      display: block;
+    }
+
+    .cerrar-modal {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: #5a2d12;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding-right: 30px;
+    }
+
+    .modal-icono {
+      font-size: 28px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: #2b1a0c;
+      font-size: 20px;
+    }
+
+    .modal-header p {
+      margin: 3px 0 0;
+      color: #7a4a24;
+      font-size: 13px;
+    }
+
+    .lista-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tip-card {
+      background: #fff4d2;
+      border: 3px solid #c4923e;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .tip-card strong {
+      color: #3e7f20;
+    }
+
+    .tip-vacio {
+      background: #fff4d2;
+      border: 3px solid #c4923e;
+      padding: 14px;
+      text-align: center;
+      color: #7a4a24;
+    }
