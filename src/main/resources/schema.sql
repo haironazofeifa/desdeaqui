@@ -3,8 +3,8 @@
 -- Curso: Desarrollo de Software III
 -- =====================================================
 
-CREATE DATABASE IF NOT EXISTS desdeaqui CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE desdeaqui;
+-- CREATE DATABASE IF NOT EXISTS desdeaqui CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE desdeaqui;
 
 -- ─────────────────────────────────────
 -- roles
