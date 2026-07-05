@@ -3,7 +3,7 @@
 -- Ejecutar después de schema.sql
 -- =====================================================
 
-USE desdeaqui;
+-- USE desdeaqui;
 
 -- ─────────────────────────────────────
 -- Roles
